@@ -1,4 +1,8 @@
 package com.example.WhoWasIts.Postear.Dto;
 
-public record CrearPostDto(String contenido) {
+import java.util.UUID;
+
+public record CrearPostDto(String contenido,
+                           UUID id
+                           ) {
 }

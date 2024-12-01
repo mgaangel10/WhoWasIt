@@ -14,10 +14,12 @@ public record PostDto(UUID id,
                       String tiempoPublicado,
                       String meciones,
                       int numeroMegustas,
-                      List<ComentariosDto> comentariosDtos
+                      List<ComentariosDto> comentariosDtos,
+                      PostDto ps
                       ) {
 
     public static PostDto of (Postear p){
+
         return new PostDto(
                 p.getId(),
                 p.getContenido(),
@@ -26,7 +28,8 @@ public record PostDto(UUID id,
                 p.getTiempoPublicado(),
                 p.getMenciones(),
                 p.getFavoritoList()==null ? 0 : p.getFavoritoList().size(),
-                p.getComentarios()== null ? null : p.getComentarios().stream().map(ComentariosDto::of).collect(Collectors.toList())
+                p.getComentarios()== null ? null : p.getComentarios().stream().map(ComentariosDto::of).collect(Collectors.toList()),
+                p.getPostears() == null ? null:PostDto.of(p.getPostears()) // Manejo de repost
         );
     }
 }
