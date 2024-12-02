@@ -1,0 +1,21 @@
+/* Ocultar barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* opcional, para un fondo más claro */
+}
+
+/* Ocultar barra de desplazamiento en navegadores Firefox */
+.scroll-container {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Safari and Chrome */
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}

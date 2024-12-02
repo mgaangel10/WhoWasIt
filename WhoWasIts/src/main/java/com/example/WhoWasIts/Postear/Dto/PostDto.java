@@ -15,7 +15,8 @@ public record PostDto(UUID id,
                       String meciones,
                       int numeroMegustas,
                       List<ComentariosDto> comentariosDtos,
-                      PostDto ps
+                      PostDto ps,
+                      int numeroDeRepost
                       ) {
 
     public static PostDto of (Postear p){
@@ -29,7 +30,8 @@ public record PostDto(UUID id,
                 p.getMenciones(),
                 p.getFavoritoList()==null ? 0 : p.getFavoritoList().size(),
                 p.getComentarios()== null ? null : p.getComentarios().stream().map(ComentariosDto::of).collect(Collectors.toList()),
-                p.getPostears() == null ? null:PostDto.of(p.getPostears()) // Manejo de repost
+                p.getPostears() == null ? null:PostDto.of(p.getPostears()), // Manejo de repost,
+                p.getReposts()== null ? 0 : p.getReposts().size()
         );
     }
 }

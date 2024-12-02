@@ -69,6 +69,7 @@ public class PostearService {
                     Optional<Postear> postOriginalOptional = postearRepo.findById(crearPostDto.id());
                     if (postOriginalOptional.isPresent()) {
                         postear.setPostears(postOriginalOptional.get());
+                        postear.getReposts().add(postOriginalOptional.get());
                     } else {
                         throw new IllegalArgumentException("El post original con el ID proporcionado no existe.");
                     }

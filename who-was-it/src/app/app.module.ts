@@ -11,6 +11,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { DetallesPostComponent } from './pages/detalles-post/detalles-post.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { CrearUsuarioAnonimoComponent } from './pages/crear-usuario-anonimo/crear-usuario-anonimo.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     InicioSesionComponent,
     HomePageComponent,
     DetallesPostComponent,
-    RegisterComponent
+    RegisterComponent,
+    CrearUsuarioAnonimoComponent
   ],
   imports: [
     BrowserModule,

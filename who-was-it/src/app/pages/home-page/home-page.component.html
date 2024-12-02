@@ -1,1 +1,170 @@
-<p>home-page works!</p>
+<div class=" d-flex w-100">
+<div class="w-25   align-content-center text-center" style="height: 100vh; background-color: black;">
+    <div class="mb-3 ">
+        <button type="button" class="btn btn-outline-light mx-auto" style="border-radius: 15px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+              </svg> Home
+        </button>
+    </div>
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-light" style="border-radius: 15px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg> Buscar
+        </button>
+    </div>
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-light mx-auto" style="border-radius: 15px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-at" viewBox="0 0 16 16">
+            <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914"/>
+          </svg> Menciones
+        </button>
+    </div>
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-light" style="border-radius: 15px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
+              </svg> Estadisticas
+        </button>
+    </div>
+  
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-light" style="border-radius: 15px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+          </svg> Perfil
+        </button>
+    </div>
+    <div>
+        <button type="button" class="btn btn-outline-light" style="border-radius: 15px;" (click)="openModalComandas(modal)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-plus-fill" viewBox="0 0 16 16">
+                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 4.697v4.974A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-1.965.45l-.338-.207z"/>
+                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
+              </svg> New Anonimato
+        </button>
+    </div>
+
+</div>
+    <div class="w-75  " >
+        <div class="d-flex w-100">
+            
+            <div class="container">
+                <div class="w-100 mx-auto" style="background-color: rgb(0, 0, 0); height: 100vh;">
+                    <input class="form-control w-50 mx-auto mb-3" type="text" placeholder="Buscar..." aria-label="default input example" style="border-radius: 15px;">
+                    <div class="scroll-container w-100">
+                        <div *ngFor="let c of verPosts">
+                            <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;">
+                                <div class="card-header d-flex w-100">
+                                    <img [src]="c.foto" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
+                                    <h5 class="ms-2 text-center w-100 align-content-center">{{c.nombreUsuario}}</h5>
+                                </div>
+                                <div class="card-body w-100 text-center">
+                                    {{c.contenido}}
+                                    <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;" *ngIf="c.ps != null">
+                                        <div class="card-header d-flex w-100 mx-auto" style="justify-content: space-around;">
+                                            <img [src]="c.ps?.foto" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
+                                            <h5 class="ms-2 text-center w-100 align-content-center">{{c.ps?.nombreUsuario}}</h5>
+                                            <div class="d-flex">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-repeat" viewBox="0 0 16 16">
+                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+                                                </svg>{{c.numeroDeRepost}}
+                                            </div>
+                                        </div>
+                                        <div class="card-body mx-auto">
+                                            {{c.ps?.contenido}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-75 mx-auto d-flex text-light" style="justify-content: space-around;">
+                                <div>
+                                    <button type="button" class="btn btn-outline-light" style="border-radius: 20px; border-color: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                        </svg>
+                                    </button>{{c.numeroMegustas}}
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-outline-light" style="border-radius: 20px; border-color: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                        </svg>
+                                    </button>{{c.comentariosDtos.length}}
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-outline-light" style="border-radius: 20px; border-color: transparent;" (click)="openModalRepost(c.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-repeat" viewBox="0 0 16 16">
+                                            <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
+                                        </svg>
+                                    </button>{{c.numeroDeRepost}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div class="w-50" style="background-color: black;">
+                <input class="form-control w-100" type="text" placeholder="Default input" aria-label="default input example">
+
+            </div>  
+
+        </div>
+    </div>
+ 
+  
+    <ng-template #detailsModalComandas let-modal >
+        <div class="modal-header">
+          <h5 class="modal-title">Comandas Terminadas</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+          <div class="w-100" >
+            <form [formGroup]="crerPost" (ngSubmit)="login(modal)">
+                <div class="mb-3 mx-auto w-75 mt-5 align-content-center text-center">
+                  <label for="emailLog" class="form-label align-content-center">¿Que quieres publicar?</label>
+                  <input type="text" class="form-control" id="emailLog" aria-describedby="emailHelp" formControlName="contenido">
+            
+            
+                </div>
+                
+                <div class="mb-3 mx-auto w-50">
+                  <button type="submit " class="btn btn-primary  w-100">Publciar</button>
+                </div>
+            
+              </form>
+          </div>
+        </div>
+        
+      </ng-template>
+
+      <ng-template #reposts let-modal>
+        <div class="modal-header">
+            <h5 class="modal-title">Repostear</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+            <div class="w-100">
+                <form [formGroup]="crerRepost" (ngSubmit)="repost(modal)">
+                    <div class="mb-3 mx-auto w-75 mt-5 align-content-center text-center">
+                        <label for="emailLog" class="form-label align-content-center">¿Qué quieres publicar?</label>
+                        <input type="text" class="form-control" id="emailLog" aria-describedby="emailHelp" formControlName="contenido">
+                    </div>
+                    
+                    <div class="mb-3 mx-auto w-50">
+                        <button type="submit" class="btn btn-primary w-100">Publicar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+    
+    
+    
+
+
+  </div>
+  
+  
