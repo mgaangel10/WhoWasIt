@@ -4,6 +4,8 @@ import { VerPost } from '../../models/ver-post';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PostResponse } from '../../models/post-response';
+import { DarMegusta } from '../../models/dar-megusta';
+import { VerPerfil } from '../../models/ver-perfil';
 
 @Component({
   selector: 'app-home-page',
@@ -17,6 +19,11 @@ export class HomePageComponent implements OnInit{
   verPosts: VerPost [] = [];
   modal:any;
   idPost!:string;
+  darMegusta!:DarMegusta;
+  perfil!:VerPerfil;
+  recomened!:VerPost;
+
+
   constructor(private service:UsuarioServiceService,private modalService: NgbModal,){}
   crerPost = new FormGroup({
     contenido: new FormControl(''),
@@ -53,12 +60,30 @@ export class HomePageComponent implements OnInit{
 
   ngOnInit(): void {
     this.verLosPost();
+    this.verPerfil();
   }
 
+  darmegusta(id:string){
+    this.service.darMegusta(id).subscribe(r=>{
+      this.darMegusta= r;
+      this.verLosPost();
+    })
+  }
+  verPerfil(){
+    this.service.verPerfil().subscribe(r=>{
+      this.perfil = r;
+    })
+  }
   verLosPost(){
     this.service.verPost().subscribe(r=>{
       this.verPosts = r;
       console.log(this.verPosts)
+    })
+  }
+  recomendar(id:string){
+    this.service.recomendar(id).subscribe(r=>{
+      this.recomened = r;
+      this.verLosPost();
     })
   }
 

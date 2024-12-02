@@ -101,6 +101,26 @@ public class PostearService {
         return null;
     }
 
+    public PostDto recomendar(UUID id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String nombre= ((UserDetails)principal).getUsername();
+            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            Optional<Postear> postear1 = postearRepo.findById(id);
+            if (usuario.isPresent()){
+                Postear postear = new Postear();
+                postear.setRecomendar(true);
+                postear.setPostears(postear1.get());
+                postear.setUsuarioAnonimo(usuario.get().getUsuarioAnonimo());
+                postear.setFechaHora(LocalDateTime.now());
+                postearRepo.save(postear);
+                return PostDto.of(postear);
+            }
+        }
+        return null;
+    }
+
 
 
 

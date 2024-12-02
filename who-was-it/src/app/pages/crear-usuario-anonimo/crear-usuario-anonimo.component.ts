@@ -15,13 +15,14 @@ export class CrearUsuarioAnonimoComponent {
 
   profileLogin = new FormGroup({
     nombreUsuario: new FormControl(''),
-    foto: new FormControl('')
+    foto: new FormControl(''),
+    conocidoComo: new FormControl('')
   })
 
   login() {
     console.log('Datos enviados al servidor:', this.profileLogin.value);
 
-    this.loginService.crearUsuarioAnonimo(this.profileLogin.value.nombreUsuario!, this.profileLogin.value.foto!)
+    this.loginService.crearUsuarioAnonimo(this.profileLogin.value.nombreUsuario!, this.profileLogin.value.foto!,this.profileLogin.value.conocidoComo!)
       .subscribe((l: UsuarioAnonimoResponse) => {
         this.router.navigate(['/home']);
 

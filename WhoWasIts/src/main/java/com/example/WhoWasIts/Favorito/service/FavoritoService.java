@@ -1,5 +1,6 @@
 package com.example.WhoWasIts.Favorito.service;
 
+import com.example.WhoWasIts.Favorito.Dto.FavoritoDto;
 import com.example.WhoWasIts.Favorito.Repositorio.FavoritoRepo;
 import com.example.WhoWasIts.Favorito.model.Favorito;
 import com.example.WhoWasIts.Favorito.model.FavoritoId;
@@ -24,7 +25,7 @@ public class FavoritoService {
     private final UsuarioRepo usuarioRepo;
     private final PostearRepo postearRepo;
 
-    public PostDto darAFavorito(UUID postId){
+    public FavoritoDto darAFavorito(UUID postId){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
@@ -33,17 +34,19 @@ public class FavoritoService {
             Optional<Postear> postear = postearRepo.findById(postId);
             Optional<Favorito> favorito1 = favoritoRepo.findByUsuarioIdAndPostearId(usuario1.get().getId(), postId);
             if (usuario1.isPresent()&&favorito1.isEmpty()){
+                boolean like = true;
                 Favorito favorito = Favorito.builder()
                         .id(new FavoritoId(usuario1.get().getId(), postId))
                         .postear(postear.get())
                         .usuario(usuario1.get())
                         .build();
                 favoritoRepo.save(favorito);
-                return PostDto.of(postear.get());
+                return FavoritoDto.of(favorito,like);
             }else {
                 Optional<Favorito> favorito = favoritoRepo.findById(new FavoritoId(usuario1.get().getId(), postId));
                 favoritoRepo.delete(favorito.get());
-                return PostDto.of(postear.get());
+                boolean like = false;
+                return FavoritoDto.of(favorito.get(),like);
             }
         }
         return null;

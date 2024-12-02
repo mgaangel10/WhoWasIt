@@ -30,4 +30,10 @@ public class PostearController {
         return ResponseEntity.ok(postDtos);
     }
 
+    @PostMapping("usuario/recomendar/{id}")
+    public ResponseEntity<PostDto> recomendar(@PathVariable UUID id){
+        PostDto postDto = postearService.recomendar(id);
+        return ResponseEntity.status(201).body(postDto);
+    }
+
 }

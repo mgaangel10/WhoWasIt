@@ -27,6 +27,7 @@ public class UsuarioAnonimo {
     @OneToOne
     private Usuario usuario;
 
+    private String conocidoComo;
 
     private String menciones;
 }

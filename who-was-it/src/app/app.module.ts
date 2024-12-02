@@ -12,6 +12,8 @@ import { DetallesPostComponent } from './pages/detalles-post/detalles-post.compo
 import { RegisterComponent } from './pages/register/register.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CrearUsuarioAnonimoComponent } from './pages/crear-usuario-anonimo/crear-usuario-anonimo.component';
+import { VerMencionesComponent } from './pages/ver-menciones/ver-menciones.component';
+import { HeaderComponent } from './componentes/header/header.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { CrearUsuarioAnonimoComponent } from './pages/crear-usuario-anonimo/crea
     HomePageComponent,
     DetallesPostComponent,
     RegisterComponent,
-    CrearUsuarioAnonimoComponent
+    CrearUsuarioAnonimoComponent,
+    VerMencionesComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

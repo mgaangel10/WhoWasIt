@@ -1,4 +1,9 @@
-export interface VerPost {
+export interface DarMegusta {
+    isLike:  boolean;
+    postDto: PostDto;
+}
+
+export interface PostDto {
     id:              string;
     contenido:       string;
     nombreUsuario:   string;
@@ -7,10 +12,8 @@ export interface VerPost {
     meciones:        string;
     numeroMegustas:  number;
     comentariosDtos: ComentariosDto[];
-    ps:              VerPost | null;
+    ps:              PostDto | null;
     numeroDeRepost:  number;
-    numeroRecomendar: number;
-    recomendar: boolean;
 }
 
 export interface ComentariosDto {

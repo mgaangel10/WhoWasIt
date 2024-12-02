@@ -27,7 +27,7 @@ public class Postear {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+
     private String contenido;
 
     @ManyToOne(fetch = FetchType.LAZY) // Evita cargar la información del usuario hasta que se necesite
@@ -44,6 +44,10 @@ public class Postear {
     private List<Comentario> comentarios = new ArrayList<>();
 
     private String menciones;
+    private boolean recomendar;
+    @OneToMany(mappedBy = "postears", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Relación bidireccional para rastrear reposts
+    private List<Postear> recomendars = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime fechaHora;

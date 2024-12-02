@@ -1,5 +1,6 @@
 package com.example.WhoWasIts.Favorito.controller;
 
+import com.example.WhoWasIts.Favorito.Dto.FavoritoDto;
 import com.example.WhoWasIts.Favorito.service.FavoritoService;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class FavoritoController {
     private final FavoritoService favoritoService;
 
     @PostMapping("usuario/dar/megusta/{id}")
-    public ResponseEntity<PostDto> darMegusta(@PathVariable UUID id){
-        PostDto postDto = favoritoService.darAFavorito(id);
+    public ResponseEntity<FavoritoDto> darMegusta(@PathVariable UUID id){
+        FavoritoDto postDto = favoritoService.darAFavorito(id);
         return ResponseEntity.status(201).body(postDto);
     }
 }
