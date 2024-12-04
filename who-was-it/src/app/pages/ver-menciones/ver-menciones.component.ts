@@ -18,13 +18,14 @@ export class VerMencionesComponent implements OnInit{
   constructor(private service:UsuarioServiceService,private modalService: NgbModal){}
   crerRepost = new FormGroup({
     contenido: new FormControl(''),
-    id: new FormControl('')
+    id: new FormControl(''),
+    idCuestionario: new FormControl('')
   })
 
   repost(modal: any) {
     console.log('Datos enviados al servidor:', this.crerRepost.value);
 
-    this.service.crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!)
+    this.service.crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!,this.crerRepost.value.idCuestionario!)
       .subscribe((l: PostResponse) => {
         
         modal.close(); // Cierra el modal después de la respuesta exitosa

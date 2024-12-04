@@ -8,6 +8,10 @@ import { PostResponse } from '../models/post-response';
 import { UsuarioAnonimoResponse } from '../models/usuario-anonimo-response';
 import { DarMegusta } from '../models/dar-megusta';
 import { VerPerfil } from '../models/ver-perfil';
+import { CuestionarioResponse } from '../models/cuestionario-response';
+import { OpcionesResponse } from '../models/crear-opciones';
+import { VotarResponse } from '../models/votar-response';
+import { ResultadoVotacion } from '../models/resultado-votacion';
 
 @Injectable({
   providedIn: 'root'
@@ -44,13 +48,14 @@ export class UsuarioServiceService {
       });
   }
 
-  crearPost(contenido:string,id:string):Observable<PostResponse>{
+  crearPost(contenido:string,id:string,idCuestionario:string):Observable<PostResponse>{
     let token = localStorage.getItem('TOKEN');
 
     return this.http.post<PostResponse>(`${this.url}/usuario/nuevo/post`,
       {
         "contenido": `${contenido}`,
-        "id": `${id}`
+        "id": `${id}`,
+        "idCuestionario":`${idCuestionario}`
       },{
         headers: {
           accept: 'application/json',
@@ -109,5 +114,77 @@ export class UsuarioServiceService {
       }
     })
   }
+  crearCuestionario(titulo:string):Observable<CuestionarioResponse>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.post<CuestionarioResponse>(`${this.url}/usuario/crear/cuestionario`,
+      {
+        "titulo": `${titulo}`
+        
+      },{
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  crearOpciones(id:string,opciones:string):Observable<OpcionesResponse>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.post<OpcionesResponse>(`${this.url}/usuario/crear/opciones/${id}`,
+      {
+        
+        "opciones": `${opciones}`
+        
+      },{
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  votar(id:string):Observable<VotarResponse>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.post<VotarResponse>(`${this.url}/usuario/votar/${id}`,
+      {
+        "id":`${id}`,
+        
+        
+      },{
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  verResultadoVotacion():Observable<ResultadoVotacion[]>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<ResultadoVotacion[]>(`${this.url}/usuario/todos/cuestioanario/votados`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  eliminarOpcion(id:string){
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.delete(`${this.url}/usuario/eliminar/opcion/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.example.WhoWasIts.Postear.Dto;
 
 import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
+import com.example.WhoWasIts.Cuestionario.Dto.CuestionarioDto;
+import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.Postear.model.Postear;
 
 import java.util.List;
@@ -18,7 +20,9 @@ public record PostDto(UUID id,
                       PostDto ps,
                       int numeroDeRepost,
                       int numeroRecomendar,
-                      boolean recomendar
+                      boolean recomendar,
+                      CuestionarioDto cuestionarioDto
+
                       ) {
 
     public static PostDto of (Postear p){
@@ -35,7 +39,8 @@ public record PostDto(UUID id,
                 p.getPostears() == null ? null:PostDto.of(p.getPostears()), // Manejo de repost,
                 p.getReposts()== null ? 0 : p.getReposts().size(),
                 p.getRecomendars()== null ? 0 : p.getRecomendars().size(),
-                p.isRecomendar()
+                p.isRecomendar(),
+                p.getCuestionario() != null ? CuestionarioDto.of(p.getCuestionario()) : null // Verifica si el cuestionario es null
         );
     }
 }

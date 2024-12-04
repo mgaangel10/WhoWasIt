@@ -2,6 +2,8 @@ package com.example.WhoWasIts.Postear.service;
 
 import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
 import com.example.WhoWasIts.Comentarios.model.Comentario;
+import com.example.WhoWasIts.Cuestionario.Repositorio.CuestionarioRepo;
+import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.Postear.Dto.CrearPostDto;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
 import com.example.WhoWasIts.Postear.Repositorio.PostearRepo;
@@ -34,6 +36,7 @@ public class PostearService {
     private final PostearRepo postearRepo;
     private final UsuarioAnonimoRepo usuarioAnonimoRepo;
     private final UsuarioRepo usuarioRepo;
+    private final CuestionarioRepo cuestionarioRepo;
 
 
     public String obtenerMencionesComoString(String contenido) {
@@ -56,7 +59,6 @@ public class PostearService {
             if (usuarioOptional.isPresent()) {
                 Usuario usuario = usuarioOptional.get();
                 UsuarioAnonimo usuarioAnonimo = usuario.getUsuarioAnonimo();
-
                 // Verifica si se trata de un post o un repost
                 Postear postear = new Postear();
                 postear.setContenido(crearPostDto.contenido());
@@ -73,6 +75,17 @@ public class PostearService {
                     } else {
                         throw new IllegalArgumentException("El post original con el ID proporcionado no existe.");
                     }
+                }
+
+                if (crearPostDto.idCuestionario()!=null){
+                    Optional<Cuestionario> cuestionario = cuestionarioRepo.findById(crearPostDto.idCuestionario());
+                    if (cuestionario.isPresent()){
+                        postear.setCuestionario(cuestionario.get());
+                    }else {
+                        throw new IllegalArgumentException("El post original con el ID proporcionado no existe.");
+                    }
+                }else {
+                    postear.setCuestionario(null);
                 }
 
                 // Guarda el post/repost y devuelve el DTO
@@ -95,6 +108,7 @@ public class PostearService {
             if (usuario.isPresent()){
               List<Postear> postears = postearRepo.findAll();
               List<PostDto> postDtos = postears.stream().map(PostDto::of).collect(Collectors.toList());
+
               return postDtos;
             }
         }

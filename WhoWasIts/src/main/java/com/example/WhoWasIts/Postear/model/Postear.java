@@ -1,6 +1,7 @@
 package com.example.WhoWasIts.Postear.model;
 
 import com.example.WhoWasIts.Comentarios.model.Comentario;
+import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.Favorito.model.Favorito;
 import com.example.WhoWasIts.UsuarioAnonimo.model.UsuarioAnonimo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -61,4 +62,7 @@ public class Postear {
     @OneToMany(mappedBy = "postears", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference // Relación bidireccional para rastrear reposts
     private List<Postear> reposts = new ArrayList<>();
+
+    @OneToOne
+    private Cuestionario cuestionario;
 }

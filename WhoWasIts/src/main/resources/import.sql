@@ -7,3 +7,4 @@ INSERT INTO administrador_roles ( roles,administrador_id) VALUES (1,'a23c61eb-4a
 
 
 INSERT INTO avatar(id,imagen) values ('94c1de1a-3f69-48c2-beb6-f1b2b89d4a79','https://img.freepik.com/psd-gratis/ilustracion-3d-avatar-linea_23-2151303048.jpg?semt=ais_hybrid');
+INSERT INTO avatar(id,imagen) values ('a73d96c1-4fcf-4932-8a4d-ea6827d53127','https://i.pinimg.com/736x/3d/3d/36/3d3d366ca172afebf2899a45511f53cf.jpg')
