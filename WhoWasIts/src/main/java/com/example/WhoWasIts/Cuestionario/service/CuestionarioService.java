@@ -214,5 +214,33 @@ public class CuestionarioService {
         return null;
     }
 
+    public List<OpcionesDto> verOpciones(UUID id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        if (principal instanceof UserDetails) {
+            String nombre= ((UserDetails)principal).getUsername();
+            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            Optional<Cuestionario> cuestionario = cuestionarioRepo.findById(id);
+            if (usuario.isPresent()){
+                List<Opciones> opciones = opcionesRepo.findByCuestionarioId(id);
+                List<OpcionesDto> opcionesDtos = opciones.stream().map(OpcionesDto::of).collect(Collectors.toList());
+                return opcionesDtos;
+            }
+        }
+        return null;
+    }
+
+    public void elimianrCuestionario(UUID id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String nombre= ((UserDetails)principal).getUsername();
+            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            Optional<Cuestionario> cuestionario = cuestionarioRepo.findById(id);
+            if (usuario.isPresent()){
+                cuestionarioRepo.delete(cuestionario.get());
+            }
+        }
+
+    }
 }

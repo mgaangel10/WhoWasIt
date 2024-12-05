@@ -10,6 +10,7 @@ import { CuestionarioResponse } from '../../models/cuestionario-response';
 import { OpcionesResponse } from '../../models/crear-opciones';
 import { VotarResponse } from '../../models/votar-response';
 import { ResultadoVotacion } from '../../models/resultado-votacion';
+import { VerOpciones } from '../../models/ver-opciones';
 
 @Component({
   selector: 'app-home-page',
@@ -28,6 +29,8 @@ export class HomePageComponent implements OnInit {
   recomened!: VerPost;
   comprobarUsuarioVotado!:string;
   idCuestionario!:string;
+  op:OpcionesResponse [] = [];
+  verOpcioness:VerOpciones [] = [];
   votacion!:VotarResponse;
   usuarioActualId: string | null = null;
 
@@ -72,7 +75,7 @@ toggleCuestionario() {
     this.verLosPost();
     this.verPerfil();
     this.usuarioActualId = localStorage.getItem('User_ID');
-
+    this.verLasOpcionesDelCUestionario();
     this.resultadoDeLaVotacion();
   }
 
@@ -97,14 +100,28 @@ toggleCuestionario() {
       this.service.crearOpciones(this.cuestionarioCreado.id!, this.crearOpcionesForm.value.opciones!).subscribe((respuesta: OpcionesResponse) => {
         this.opcionesList.push(this.crearOpcionesForm.value.opciones!);
         console.log('Opción agregada:', respuesta);
-        console.log('Opciones List:', this.opcionesList);  // Verifica las opciones almacenadas
+        console.log('Opciones List:', this.opcionesList);
+        this.verLasOpcionesDelCUestionario();  // Verifica las opciones almacenadas
         this.crearOpcionesForm.reset();
       });
     }
   }
   
-  eliminarOpcion(index: number) {
-    this.opciones.splice(index, 1);
+
+  eliminarOpciones(id:string){
+    this.service.eliminarOpcion(id).subscribe(r=>{
+      this.verLasOpcionesDelCUestionario();
+    })
+  }
+  eliminarCuestionario(){
+    this.service.eliminarCuestionario(this.cuestionarioCreado?.id!).subscribe(r=>{
+
+    })
+  }
+  verLasOpcionesDelCUestionario(){
+    this.service.verOpcionesCuestionario(this.cuestionarioCreado?.id!).subscribe(r=>{
+      this.verOpcioness = r;
+    })
   }
 
   votar(id: string): void {
@@ -149,6 +166,7 @@ toggleCuestionario() {
     this.service
       .crearPost(this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!)
       .subscribe((post: PostResponse) => {
+        console.log('hola'+post);
         this.verLosPost();
         modal.close();
         this.resetCuestionario();
@@ -164,6 +182,7 @@ toggleCuestionario() {
     this.service
       .crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!)
       .subscribe((post: PostResponse) => {
+        
         this.verLosPost();
         modal.close();
         this.resetCuestionario();

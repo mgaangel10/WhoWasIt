@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +56,17 @@ public class CuestionarioController {
         return ResponseEntity.ok(cuestionarioDtos);
     }
 
+    @GetMapping("usuario/ver/opciones/{id}")
+    public ResponseEntity<List<OpcionesDto>> verOpciones(@PathVariable UUID id){
+        List<OpcionesDto> opcionesDtos = cuestionarioService.verOpciones(id);
+        return ResponseEntity.ok(opcionesDtos);
+    }
 
+    @DeleteMapping("usuario/eliminar/cuestionario/{id}")
+    public ResponseEntity<?> eliminarCuestionario(@PathVariable UUID id){
+        cuestionarioService.elimianrCuestionario(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 

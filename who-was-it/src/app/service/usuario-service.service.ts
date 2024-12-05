@@ -12,6 +12,7 @@ import { CuestionarioResponse } from '../models/cuestionario-response';
 import { OpcionesResponse } from '../models/crear-opciones';
 import { VotarResponse } from '../models/votar-response';
 import { ResultadoVotacion } from '../models/resultado-votacion';
+import { VerOpciones } from '../models/ver-opciones';
 
 @Injectable({
   providedIn: 'root'
@@ -185,6 +186,29 @@ export class UsuarioServiceService {
       });
   }
 
+  verOpcionesCuestionario(id:string):Observable<VerOpciones[]>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<VerOpciones[]>(`${this.url}/usuario/ver/opciones/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  eliminarCuestionario(id:string){
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.delete(`${this.url}/usuario/eliminar/cuestionario/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
 
 
 }

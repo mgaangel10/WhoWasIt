@@ -21,6 +21,7 @@ public class Cuestionario {
     private UUID id;
     private String titulo;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(nullable = false)
     private  List<Opciones> opciones ;
 
     private int totalDeVotos;

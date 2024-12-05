@@ -82,7 +82,7 @@ public class PostearService {
                     if (cuestionario.isPresent()){
                         postear.setCuestionario(cuestionario.get());
                     }else {
-                        throw new IllegalArgumentException("El post original con el ID proporcionado no existe.");
+                        postear.setCuestionario(null);
                     }
                 }else {
                     postear.setCuestionario(null);
