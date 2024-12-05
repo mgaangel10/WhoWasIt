@@ -9,10 +9,10 @@
             
             <div class="container">
                 <div class="w-100 mx-auto" style="background-color: rgb(0, 0, 0); height: 100vh;">
-                    <div class="d-flex">
+                    <div class="d-flex " >
                         <input class="form-control w-50 mx-auto mb-3 mt-2" type="text" placeholder="Buscar..." aria-label="default input example" style="border-radius: 15px;">
                         <button type="button" class="btn btn-outline-light w-25 mt-2" style="border-radius: 15px;height: 1%; " (click)="openModalComandas(modal)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-plus-fill" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope-plus-fill" viewBox="0 0 16 16">
                                 <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 4.697v4.974A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-1.965.45l-.338-.207z"/>
                                 <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
                               </svg> 
@@ -21,7 +21,7 @@
                    
                     <div class="scroll-container w-100">
                         <div *ngFor="let c of verPosts">
-                            <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;">
+                            <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;" (click)="detallesPost(c.id)">
                                 <div class="card-header d-flex w-100 mx-auto " style="justify-content: space-around;">
                                     <img [src]="c.foto" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
                                     <h5 class="ms-2 text-center w-100 align-content-center">{{c.nombreUsuario}}</h5>
@@ -71,7 +71,7 @@
                                   
                                     
                                     
-                                    <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;" *ngIf="c.ps != null && c.ps.cuestionarioDto!=null">
+                                    <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;" *ngIf="c.ps != null && c.ps!=null">
                                         <div class="card-header d-flex w-100 mx-auto" style="justify-content: space-around;">
                                             <img [src]="c.ps?.foto" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
                                             <h5 class="ms-2 text-center w-100 align-content-center">{{c.ps?.nombreUsuario}}</h5>
@@ -83,7 +83,7 @@
                                         </div>
                                         <div class="card-body mx-auto">
                                             {{c.ps?.contenido}} <br>
-                                            <u>  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                                            <u *ngIf="c.ps.cuestionarioDto!=null">  <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
                                                 <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
                                               </svg>...</u>
                                           

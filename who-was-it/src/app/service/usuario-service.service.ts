@@ -13,6 +13,8 @@ import { OpcionesResponse } from '../models/crear-opciones';
 import { VotarResponse } from '../models/votar-response';
 import { ResultadoVotacion } from '../models/resultado-votacion';
 import { VerOpciones } from '../models/ver-opciones';
+import { DetallesPost } from '../models/detalles-post';
+import { VerMensajes } from '../models/ver-mensajes';
 
 @Injectable({
   providedIn: 'root'
@@ -210,5 +212,28 @@ export class UsuarioServiceService {
       });
   }
 
+  detallesDelPost(id:string):Observable<DetallesPost>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<DetallesPost>(`${this.url}/usuario/ver/detalles/post/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  verComentarios(id:string):Observable<VerMensajes[]>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<VerMensajes[]>(`${this.url}/usuario/ver/comentarios/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
 
 }

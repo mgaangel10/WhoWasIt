@@ -36,4 +36,10 @@ public class PostearController {
         return ResponseEntity.status(201).body(postDto);
     }
 
+    @GetMapping("usuario/ver/detalles/post/{id}")
+    public ResponseEntity<PostDto> detallesPost(@PathVariable UUID id){
+        PostDto postDto = postearService.findByID(id);
+        return ResponseEntity.ok(postDto);
+    }
+
 }

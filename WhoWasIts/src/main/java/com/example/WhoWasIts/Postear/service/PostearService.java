@@ -135,6 +135,20 @@ public class PostearService {
         return null;
     }
 
+    public PostDto findByID(UUID id){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String nombre= ((UserDetails)principal).getUsername();
+            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            Optional<Postear> postear1 = postearRepo.findById(id);
+            if (usuario.isPresent()){
+               return PostDto.of(postear1.get());
+            }
+        }
+        return null;
+    }
+
 
 
 

@@ -15,6 +15,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { CrearUsuarioAnonimoComponent } from './pages/crear-usuario-anonimo/crear-usuario-anonimo.component';
 import { VerMencionesComponent } from './pages/ver-menciones/ver-menciones.component';
 import { HeaderComponent } from './componentes/header/header.component';
+import { RepostStackComponent } from './pages/repost-stack/repost-stack.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { HeaderComponent } from './componentes/header/header.component';
     RegisterComponent,
     CrearUsuarioAnonimoComponent,
     VerMencionesComponent,
-    HeaderComponent
+    HeaderComponent,
+    RepostStackComponent
   ],
   imports: [
     BrowserModule,

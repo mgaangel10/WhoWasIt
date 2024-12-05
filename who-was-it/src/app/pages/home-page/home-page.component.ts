@@ -11,6 +11,7 @@ import { OpcionesResponse } from '../../models/crear-opciones';
 import { VotarResponse } from '../../models/votar-response';
 import { ResultadoVotacion } from '../../models/resultado-votacion';
 import { VerOpciones } from '../../models/ver-opciones';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -69,7 +70,7 @@ toggleCuestionario() {
     idCuestionario: new FormControl(''),
   });
 
-  constructor(private service: UsuarioServiceService, private modalService: NgbModal) {}
+  constructor(private service: UsuarioServiceService, private modalService: NgbModal,private router: Router) {}
 
   ngOnInit(): void {
     this.verLosPost();
@@ -237,5 +238,11 @@ toggleCuestionario() {
     this.opcionesList = [];
     this.crearCuestionarioForm.reset();
     this.crearOpcionesForm.reset();
+  }
+
+  detallesPost(id:string){
+    
+      this.router.navigate(['/detalles-post', id]);
+    
   }
 }

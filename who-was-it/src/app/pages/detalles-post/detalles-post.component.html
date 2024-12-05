@@ -1,1 +1,145 @@
-<p>detalles-post works!</p>
+<div class="d-flex w-100">
+    <div class="w-25   align-content-center text-center" style="height: 100vh; background-color: black;">
+        <app-header></app-header>
+
+    </div>
+    <div class="w-75  " >
+        <div class="d-flex w-100">
+            
+            <div class="container">
+                <div class="w-100 mx-auto" style="background-color: rgb(0, 0, 0); height: 100vh;">
+                    
+                    
+                   
+                    <div class="scroll-container w-100">
+                        <div >
+                            <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;">
+                                <div class="card-header d-flex w-100 mx-auto" style="justify-content: space-around;">
+                                  <img [src]="detallesDelPost.foto" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
+                                  <h5 class="ms-2 text-center w-100 align-content-center">{{detallesDelPost.nombreUsuario}}</h5>
+                                  <svg xmlns="http://www.w3.org/2000/svg" *ngIf="detallesDelPost.recomendar" width="30" height="30" fill="currentColor" class="bi bi-rocket-takeoff  align-content-center rocket-launch" viewBox="0 0 16 16">
+                                    <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362s.96-1.932.362-2.531c-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532"/>
+                                    <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9 9 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a10 10 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093q.1.026.16.045c.184.06.279.13.351.295l.029.073a3.5 3.5 0 0 1 .157.721c.055.485.051 1.178-.159 2.065m-4.828 7.475.04-.04-.107 1.081a1.54 1.54 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a9 9 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006M5.205 5c-.625.626-.94 1.351-1.004 2.09a9 9 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a3 3 0 0 0-.045-.283 3 3 0 0 0-.3-.041Z"/>
+                                    <path d="M7.009 12.139a7.6 7.6 0 0 1-1.804-1.352A7.6 7.6 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                                  </svg>
+                                </div>
+                                <div class="card-body w-100 text-center">
+                                  {{detallesDelPost.contenido}}
+                              
+                                  <!-- Mostrar el cuestionario si existe -->
+                                  <div class="card w-75 mx-auto mb-3 card shadow bg-white rounded" *ngIf="detallesDelPost.cuestionarioDto != null">
+                                    <div class="card-header d-flex w-100 mx-auto" style="justify-content: space-around; background-color: rgb(247, 221, 108);">
+                                      {{detallesDelPost.cuestionarioDto.titulo}}
+                                    </div>
+                                    <div class="card-body mx-auto w-100" *ngFor="let q of detallesDelPost.cuestionarioDto.opciones" style="background-color: rgb(245, 226, 145);">
+                                      <button type="button" class="btn btn-light w-100 text-start" style="border-radius: 15px;" (click)="votar(q.id)">
+                                        {{q.opcion}}
+                                      </button>
+                                      <div *ngIf="resultadoVotacion && resultadoVotacion.length > 0">
+                                        <div *ngFor="let opcion of resultadoVotacion">
+                                          <div *ngIf="opcion.id === detallesDelPost.cuestionarioDto.id">
+                                            <div *ngFor="let o of opcion.opciones">
+                                              <div *ngIf="o.id === q.id">
+                                                <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100">
+                                                  <div class="progress-bar bg-success text-danger" [style.width.%]="o.porcentajeVotos">
+                                                    {{o.porcentajeVotos}}%
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                              
+                                  <!-- Renderiza la lista de reposts como cards separados -->
+                                  <ng-container *ngIf="detallesDelPost.ps != null">
+                                    <app-repost-stack [repost]="detallesDelPost.ps"></app-repost-stack>
+                                  </ng-container>
+                                </div>
+                              </div>
+                              
+                            <div class="w-75 mx-auto d-flex text-light" style="justify-content: space-around;">
+                                <div>
+                                    <button type="button" class="btn btn-outline-light" style="border-radius: 20px; border-color: transparent;" (click)="darmegusta(detallesDelPost.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                        </svg>
+                                    </button>{{detallesDelPost.numeroMegustas}}
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-outline-light" style="border-radius: 20px; border-color: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                        </svg>
+                                    </button>{{detallesDelPost.comentariosDtos.length}}
+                                </div>
+                           
+                                <div>
+                                    <button type="button" class="btn btn-outline-light" style="border-radius: 20px; border-color: transparent;"(click)="recomendar(detallesDelPost.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rocket-takeoff" viewBox="0 0 16 16">
+                                            <path d="M9.752 6.193c.599.6 1.73.437 2.528-.362s.96-1.932.362-2.531c-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532"/>
+                                            <path d="M15.811 3.312c-.363 1.534-1.334 3.626-3.64 6.218l-.24 2.408a2.56 2.56 0 0 1-.732 1.526L8.817 15.85a.51.51 0 0 1-.867-.434l.27-1.899c.04-.28-.013-.593-.131-.956a9 9 0 0 0-.249-.657l-.082-.202c-.815-.197-1.578-.662-2.191-1.277-.614-.615-1.079-1.379-1.275-2.195l-.203-.083a10 10 0 0 0-.655-.248c-.363-.119-.675-.172-.955-.132l-1.896.27A.51.51 0 0 1 .15 7.17l2.382-2.386c.41-.41.947-.67 1.524-.734h.006l2.4-.238C9.005 1.55 11.087.582 12.623.208c.89-.217 1.59-.232 2.08-.188.244.023.435.06.57.093q.1.026.16.045c.184.06.279.13.351.295l.029.073a3.5 3.5 0 0 1 .157.721c.055.485.051 1.178-.159 2.065m-4.828 7.475.04-.04-.107 1.081a1.54 1.54 0 0 1-.44.913l-1.298 1.3.054-.38c.072-.506-.034-.993-.172-1.418a9 9 0 0 0-.164-.45c.738-.065 1.462-.38 2.087-1.006M5.205 5c-.625.626-.94 1.351-1.004 2.09a9 9 0 0 0-.45-.164c-.424-.138-.91-.244-1.416-.172l-.38.054 1.3-1.3c.245-.246.566-.401.91-.44l1.08-.107zm9.406-3.961c-.38-.034-.967-.027-1.746.163-1.558.38-3.917 1.496-6.937 4.521-.62.62-.799 1.34-.687 2.051.107.676.483 1.362 1.048 1.928.564.565 1.25.941 1.924 1.049.71.112 1.429-.067 2.048-.688 3.079-3.083 4.192-5.444 4.556-6.987.183-.771.18-1.345.138-1.713a3 3 0 0 0-.045-.283 3 3 0 0 0-.3-.041Z"/>
+                                            <path d="M7.009 12.139a7.6 7.6 0 0 1-1.804-1.352A7.6 7.6 0 0 1 3.794 8.86c-1.102.992-1.965 5.054-1.839 5.18.125.126 3.936-.896 5.054-1.902Z"/>
+                                          </svg>
+                                    </button>{{detallesDelPost.numeroRecomendar}}
+                                </div>
+                            </div>
+                            <hr class=" mx-auto w-75" style="background-color: white; height: 3px;">
+                            <div *ngFor="let c of comentario" class="d-flex flex-column align-items-center w-75 mx-auto">
+                                <div class="d-flex align-items-center mb-2 text-light  w-100">
+                                    <img [src]="c.foto" alt="User Photo" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+                                    <h6 class="m-0">{{c.nombreUsuario}}</h6>
+                                </div>
+                                <div class="w-75 text-light bg-secondary p-3 text-center" style="border-radius: 10px;">
+                                    {{c.contenido}}
+                                </div>
+                                <hr class="mx-auto w-100 mt-5" style="background-color: white; height: 3px;">
+                            </div>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div class="w-50 align-content-center text-light" style="background-color: black; ">
+                <div class="d-flex justify-content-center">
+                    <img [src]="perfil.foto" alt="" class="w-50" style="border-radius: 50%;">
+                  </div>
+                <h5 class="text-center">{{perfil.nombreUsuario}}</h5>
+                <hr>
+                <h6 class="text-center"><u>Informacion Real</u></h6>
+                <div class="d-flex" style="justify-content: space-around;">
+                    <h5>Nombre:</h5>
+                    <h5>{{perfil.usuario.name}}</h5>
+                </div>
+                <div class="d-flex" style="justify-content: space-around;">
+                    <h5>Apellido:</h5>
+                    <h5>{{perfil.usuario.lastName}}</h5>
+                </div>
+                <div class="d-flex" style="justify-content: space-around;">
+                    <h5>Email:</h5>
+                    <h5>{{perfil.usuario.username}}</h5>
+                </div>
+                <div class="d-flex" style="justify-content: space-around;">
+                    <h5>Numero Telefono:</h5>
+                    <h5>{{perfil.usuario.phoneNumber}}</h5>
+                </div>
+                <div class=" text-center w-100">
+                    <button type="button" class="btn btn-outline-light mt-5 text-center w-50" style="border-radius: 15px;">Ir a Perfil</button>
+                </div>
+                
+
+
+
+            </div>  
+
+        </div>
+    </div>
+
+</div>
