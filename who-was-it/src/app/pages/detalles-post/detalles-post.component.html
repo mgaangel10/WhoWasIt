@@ -13,7 +13,7 @@
                    
                     <div class="scroll-container w-100">
                         <div >
-                            <div class="card w-75 mx-auto mb-3" style="border-radius: 15px;">
+                            <div class="card w-75 mx-auto mb-3 mt-3" style="border-radius: 15px;">
                                 <div class="card-header d-flex w-100 mx-auto" style="justify-content: space-around;">
                                   <img [src]="detallesDelPost.foto" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
                                   <h5 class="ms-2 text-center w-100 align-content-center">{{detallesDelPost.nombreUsuario}}</h5>
@@ -87,6 +87,18 @@
                                 </div>
                             </div>
                             <hr class=" mx-auto w-75" style="background-color: white; height: 3px;">
+                            <div class="d-flex w-100 mx-auto">
+                              <form [formGroup]="profileLogin" (ngSubmit)="login()" class="d-flex w-50 mx-auto mb-3 mt-3"> <input type="text" class="form-control w-100 mx-auto" style="border-radius: 15px;" id="emailLog" placeholder="Comentar..." aria-describedby="emailHelp" formControlName="contenido">
+                                <button type="submit" class="btn btn-outline-light  text-center w-25" style="border-radius: 15px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                  <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                                </svg></button>
+                                
+
+                              </form>
+                              
+
+                            </div>
+                            <hr class=" mx-auto w-75" style="background-color: white; height: 3px;">
                             <div *ngFor="let c of comentario" class="d-flex flex-column align-items-center w-75 mx-auto">
                                 <div class="d-flex align-items-center mb-2 text-light  w-100">
                                     <img [src]="c.foto" alt="User Photo" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
@@ -108,6 +120,7 @@
             
             
             <div class="w-50 align-content-center text-light" style="background-color: black; ">
+              
                 <div class="d-flex justify-content-center">
                     <img [src]="perfil.foto" alt="" class="w-50" style="border-radius: 50%;">
                   </div>

@@ -1,8 +1,10 @@
-package com.example.WhoWasIts.Postear.model;
+package com.example.WhoWasIts.Charlas.model;
 
 import com.example.WhoWasIts.Comentarios.model.Comentario;
 import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.Favorito.model.Favorito;
+import com.example.WhoWasIts.FavoritoCharla.model.FavoritoCharla;
+import com.example.WhoWasIts.Postear.model.Postear;
 import com.example.WhoWasIts.UsuarioAnonimo.model.UsuarioAnonimo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -13,21 +15,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Postear {
-
+@Data
+@Builder
+public class Charlas {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
 
     private String contenido;
 
@@ -36,37 +38,25 @@ public class Postear {
     @JsonBackReference // Evita referencias circulares en la serialización
     private UsuarioAnonimo usuarioAnonimo;
 
-    @OneToMany(mappedBy = "postear", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "charla", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference // Indica que este lado de la relación se serializa
-    private List<Favorito> favoritoList = new ArrayList<>();
+    private List<FavoritoCharla> favoritoList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postear", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "charla", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Comentario> comentarios = new ArrayList<>();
 
     private String menciones;
-    private boolean recomendar;
-    @OneToMany(mappedBy = "postears", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Relación bidireccional para rastrear reposts
-    private List<Postear> recomendars = new ArrayList<>();
+
+
 
     @Column(nullable = false)
     private LocalDateTime fechaHora;
 
     private String tiempoPublicado;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Evita cargar toda la relación hasta que sea necesario
-    @JsonBackReference // Para evitar ciclos infinitos en los reposts
-    private Postear postears;
-
-    @OneToMany(mappedBy = "postears", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Relación bidireccional para rastrear reposts
-    private List<Postear> reposts = new ArrayList<>();
-
-    private boolean postUnaSolaVez;
 
 
 
-    @OneToOne
-    private Cuestionario cuestionario;
+
 }

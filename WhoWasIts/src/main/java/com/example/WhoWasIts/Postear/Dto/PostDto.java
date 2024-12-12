@@ -21,7 +21,9 @@ public record PostDto(UUID id,
                       int numeroDeRepost,
                       int numeroRecomendar,
                       boolean recomendar,
-                      CuestionarioDto cuestionarioDto
+                      CuestionarioDto cuestionarioDto,
+                      boolean soloUnaVez
+
 
                       ) {
 
@@ -40,7 +42,9 @@ public record PostDto(UUID id,
                 p.getReposts()== null ? 0 : p.getReposts().size(),
                 p.getRecomendars()== null ? 0 : p.getRecomendars().size(),
                 p.isRecomendar(),
-                p.getCuestionario() != null ? CuestionarioDto.of(p.getCuestionario()) : null // Verifica si el cuestionario es null
+                p.getCuestionario() != null ? CuestionarioDto.of(p.getCuestionario()) : null,
+                p.isPostUnaSolaVez()
+                // Verifica si el cuestionario es null
         );
     }
 }

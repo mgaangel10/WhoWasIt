@@ -15,6 +15,9 @@ import { ResultadoVotacion } from '../models/resultado-votacion';
 import { VerOpciones } from '../models/ver-opciones';
 import { DetallesPost } from '../models/detalles-post';
 import { VerMensajes } from '../models/ver-mensajes';
+import { CharlaResponse } from '../models/charla-response';
+import { VerCharla } from '../models/ver-charla';
+import { PostUnaVezResponse } from '../models/post-una-vez-reponse';
 
 @Injectable({
   providedIn: 'root'
@@ -51,14 +54,15 @@ export class UsuarioServiceService {
       });
   }
 
-  crearPost(contenido:string,id:string,idCuestionario:string):Observable<PostResponse>{
+  crearPost(contenido:string,id:string,idCuestionario:string,postUnaVez:boolean):Observable<PostResponse>{
     let token = localStorage.getItem('TOKEN');
 
     return this.http.post<PostResponse>(`${this.url}/usuario/nuevo/post`,
       {
         "contenido": `${contenido}`,
         "id": `${id}`,
-        "idCuestionario":`${idCuestionario}`
+        "idCuestionario":`${idCuestionario}`,
+        "postUnaVez":`${postUnaVez}`
       },{
         headers: {
           accept: 'application/json',
@@ -236,4 +240,68 @@ export class UsuarioServiceService {
       });
   }
 
+  comentar(id:string,contenido:string):Observable<VerMensajes>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.post<VerMensajes>(`${this.url}/usuario/comentar/${id}`,{
+      "contenido": `${contenido}`
+    },
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  crearCharla(contenido:string):Observable<CharlaResponse>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.post<CharlaResponse>(`${this.url}/usuario/crear/charla`,{
+      "contenido": `${contenido}`
+    },
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  verCharla():Observable<VerCharla[]>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<VerCharla[]>(`${this.url}/usuario/ver/charlas`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  darMegustaCharla(id:string):Observable<DarMegusta>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.post<DarMegusta>(`${this.url}/usuario/dar/megusta/charla/${id}`,{},
+      {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  }
+
+  verPostUnaVez(id:string):Observable<PostUnaVezResponse>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<PostUnaVezResponse>(`${this.url}/usuario/ver/post/una/vez/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+  }
 }

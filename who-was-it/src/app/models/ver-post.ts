@@ -12,6 +12,7 @@ export interface VerPost {
     numeroRecomendar: number;
     recomendar:       boolean;
     cuestionarioDto:  CuestionarioDto;
+    soloUnaVez:       boolean;
 }
 
 export interface ComentariosDto {

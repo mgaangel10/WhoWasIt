@@ -1,5 +1,6 @@
 package com.example.WhoWasIts.Comentarios.model;
 
+import com.example.WhoWasIts.Charlas.model.Charlas;
 import com.example.WhoWasIts.Favorito.model.Favorito;
 import com.example.WhoWasIts.Postear.model.Postear;
 import com.example.WhoWasIts.users.model.Usuario;
@@ -29,6 +30,10 @@ public class Comentario {
     @ManyToOne
     @JoinColumn(name = "postear_id")
     private Postear postear;
+
+    @ManyToOne
+    @JoinColumn(name = "charla_id")
+    private Charlas charla;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")

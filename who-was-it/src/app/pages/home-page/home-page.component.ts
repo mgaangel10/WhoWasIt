@@ -12,6 +12,7 @@ import { VotarResponse } from '../../models/votar-response';
 import { ResultadoVotacion } from '../../models/resultado-votacion';
 import { VerOpciones } from '../../models/ver-opciones';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PostUnaVezResponse } from '../../models/post-una-vez-reponse';
 
 @Component({
   selector: 'app-home-page',
@@ -25,9 +26,11 @@ export class HomePageComponent implements OnInit {
   verPosts: VerPost[] = [];
   modal: any;
   idPost!: string;
+  unaVez!:PostUnaVezResponse;
   darMegusta!: DarMegusta;
   perfil!: VerPerfil;
   recomened!: VerPost;
+  
   comprobarUsuarioVotado!:string;
   idCuestionario!:string;
   op:OpcionesResponse [] = [];
@@ -62,12 +65,15 @@ toggleCuestionario() {
     contenido: new FormControl(''),
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
+    postUnaVez : new FormControl(),
+    
   });
 
   crerRepost = new FormGroup({
     contenido: new FormControl(''),
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
+    postUnaVez : new FormControl()
   });
 
   constructor(private service: UsuarioServiceService, private modalService: NgbModal,private router: Router) {}
@@ -78,6 +84,13 @@ toggleCuestionario() {
     this.usuarioActualId = localStorage.getItem('User_ID');
     this.verLasOpcionesDelCUestionario();
     this.resultadoDeLaVotacion();
+  }
+
+  verPostUnaVEz(id:string){
+    this.service.verPostUnaVez(id).subscribe(r=>{
+      this.unaVez = r;
+      this.verLosPost();
+    })
   }
 
   // Crear Cuestionario
@@ -165,7 +178,7 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!)
+      .crearPost(this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!)
       .subscribe((post: PostResponse) => {
         console.log('hola'+post);
         this.verLosPost();
@@ -181,7 +194,7 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!)
+      .crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!)
       .subscribe((post: PostResponse) => {
         
         this.verLosPost();

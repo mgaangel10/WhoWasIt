@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { CrearUsuarioAnonimoComponent } from './pages/crear-usuario-anonimo/crea
 import { VerMencionesComponent } from './pages/ver-menciones/ver-menciones.component';
 import { HeaderComponent } from './componentes/header/header.component';
 import { RepostStackComponent } from './pages/repost-stack/repost-stack.component';
+import { CharlasPageComponent } from './pages/charlas-page/charlas-page.component';
 
 @NgModule({
   declarations: [
@@ -27,11 +29,13 @@ import { RepostStackComponent } from './pages/repost-stack/repost-stack.componen
     CrearUsuarioAnonimoComponent,
     VerMencionesComponent,
     HeaderComponent,
-    RepostStackComponent
+    RepostStackComponent,
+    CharlasPageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    MatSlideToggleModule,
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,

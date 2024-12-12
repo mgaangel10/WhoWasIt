@@ -8,6 +8,7 @@ import { DarMegusta } from '../../models/dar-megusta';
 import { VotarResponse } from '../../models/votar-response';
 import { ResultadoVotacion } from '../../models/resultado-votacion';
 import { VerMensajes } from '../../models/ver-mensajes';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-detalles-post',
@@ -100,5 +101,20 @@ resultadoDeLaVotacion(): void {
     this.service.verComentarios(this.postId!).subscribe(r=>{
       this.comentario = r;
     })
+  }
+
+  profileLogin = new FormGroup({
+    contenido: new FormControl('')
+    
+  })
+
+  login() {
+    console.log('Datos enviados al servidor:', this.profileLogin.value);
+
+    this.service.comentar(this.postId!,this.profileLogin.value.contenido!)
+      .subscribe((l: VerMensajes) => {
+       this.verComentarios();
+        this.verDetallesPost();
+      });
   }
 }

@@ -6,11 +6,13 @@ import { CrearUsuarioAnonimoComponent } from './pages/crear-usuario-anonimo/crea
 import { Routes, RouterModule } from '@angular/router';
 import { VerMencionesComponent } from './pages/ver-menciones/ver-menciones.component';
 import { DetallesPostComponent } from './pages/detalles-post/detalles-post.component';
+import { CharlasPageComponent } from './pages/charlas-page/charlas-page.component';
 
 const routes: Routes = [
   { path: 'login', component: InicioSesionComponent},
   { path: 'usuario-anonimo', component: CrearUsuarioAnonimoComponent},
   { path: 'menciones', component: VerMencionesComponent},
+  { path: 'charlas', component: CharlasPageComponent},
   { path: 'detalles-post/:idPost', component: DetallesPostComponent},
 
 

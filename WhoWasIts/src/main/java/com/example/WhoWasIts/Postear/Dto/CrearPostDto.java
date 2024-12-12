@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public record CrearPostDto(String contenido,
                            UUID id,
-                           UUID idCuestionario
+                           UUID idCuestionario,
+                           boolean postUnaVez
                            ) {
 }
