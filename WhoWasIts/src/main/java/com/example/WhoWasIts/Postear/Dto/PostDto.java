@@ -2,7 +2,7 @@ package com.example.WhoWasIts.Postear.Dto;
 
 import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
 import com.example.WhoWasIts.Cuestionario.Dto.CuestionarioDto;
-import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
+import com.example.WhoWasIts.FlashPost.Dto.VisualizacionDto;
 import com.example.WhoWasIts.Postear.model.Postear;
 
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public record PostDto(UUID id,
                       String contenido,
+                      String palabraDesordenada,
                       String nombreUsuario,
                       String foto,
                       String tiempoPublicado,
@@ -22,7 +23,9 @@ public record PostDto(UUID id,
                       int numeroRecomendar,
                       boolean recomendar,
                       CuestionarioDto cuestionarioDto,
-                      boolean soloUnaVez
+                      boolean soloUnaVez,
+                      boolean desorden,
+                      List<VisualizacionDto> visualizacionDtos
 
 
                       ) {
@@ -32,6 +35,7 @@ public record PostDto(UUID id,
         return new PostDto(
                 p.getId(),
                 p.getContenido(),
+                p.getPalabraDesordenada(),
                 p.getUsuarioAnonimo().getNombreDelUsuario(),
                 p.getUsuarioAnonimo().getAvatar().getImagen(),
                 p.getTiempoPublicado(),
@@ -43,7 +47,9 @@ public record PostDto(UUID id,
                 p.getRecomendars()== null ? 0 : p.getRecomendars().size(),
                 p.isRecomendar(),
                 p.getCuestionario() != null ? CuestionarioDto.of(p.getCuestionario()) : null,
-                p.isPostUnaSolaVez()
+                p.isPostUnaSolaVez(),
+                p.isPalabrasDesordenadas(),
+                p.getVisualizacions() == null ? null : p.getVisualizacions().stream().map(VisualizacionDto::of).collect(Collectors.toList())
                 // Verifica si el cuestionario es null
         );
     }

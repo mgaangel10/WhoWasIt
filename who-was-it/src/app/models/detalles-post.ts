@@ -1,6 +1,7 @@
 export interface DetallesPost {
     id:               string;
     contenido:        string;
+    palabraDesordenada: string;
     nombreUsuario:    string;
     foto:             string;
     tiempoPublicado:  null;
@@ -12,6 +13,8 @@ export interface DetallesPost {
     numeroRecomendar: number;
     recomendar:       boolean;
     cuestionarioDto:  CuestionarioDto;
+    desorden:         boolean;
+
 }
 
 export interface ComentariosDto {

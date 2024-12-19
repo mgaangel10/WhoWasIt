@@ -66,6 +66,7 @@ toggleCuestionario() {
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
     postUnaVez : new FormControl(),
+    desorden: new FormControl()
     
   });
 
@@ -73,7 +74,8 @@ toggleCuestionario() {
     contenido: new FormControl(''),
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
-    postUnaVez : new FormControl()
+    postUnaVez : new FormControl(),
+    desorden: new FormControl()
   });
 
   constructor(private service: UsuarioServiceService, private modalService: NgbModal,private router: Router) {}
@@ -84,9 +86,11 @@ toggleCuestionario() {
     this.usuarioActualId = localStorage.getItem('User_ID');
     this.verLasOpcionesDelCUestionario();
     this.resultadoDeLaVotacion();
+    this.verPostUnaVEz(this.idPost);
   }
 
   verPostUnaVEz(id:string){
+    this.idPost = id;
     this.service.verPostUnaVez(id).subscribe(r=>{
       this.unaVez = r;
       this.verLosPost();
@@ -178,7 +182,7 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!)
+      .crearPost(this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
         console.log('hola'+post);
         this.verLosPost();
@@ -194,7 +198,7 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!)
+      .crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
         
         this.verLosPost();

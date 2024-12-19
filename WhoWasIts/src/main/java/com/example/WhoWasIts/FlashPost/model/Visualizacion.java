@@ -1,5 +1,6 @@
-package com.example.WhoWasIts.Postear.model;
+package com.example.WhoWasIts.FlashPost.model;
 
+import com.example.WhoWasIts.Postear.model.Postear;
 import com.example.WhoWasIts.users.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

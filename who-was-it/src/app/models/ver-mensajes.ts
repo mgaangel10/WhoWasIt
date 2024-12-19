@@ -3,4 +3,6 @@ export interface VerMensajes {
     contenido:     string;
     nombreUsuario: string;
     foto:          string;
+    ganador:       boolean;
+
 }

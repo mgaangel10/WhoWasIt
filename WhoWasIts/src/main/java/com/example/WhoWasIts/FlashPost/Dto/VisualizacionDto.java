@@ -1,7 +1,7 @@
-package com.example.WhoWasIts.Postear.Dto;
+package com.example.WhoWasIts.FlashPost.Dto;
 
 import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
-import com.example.WhoWasIts.Postear.model.Visualizacion;
+import com.example.WhoWasIts.FlashPost.model.Visualizacion;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,9 +17,9 @@ public record VisualizacionDto(UUID idVisualizacion,
                                String menciones,
                                List<ComentariosDto> comentariosDtos,
                                int numeroDeMegustas,
-                               int numerosDeComentarios,
-                               boolean loHaVisto) {
-    public static VisualizacionDto of(Visualizacion v,boolean loHavisto){
+                               int numerosDeComentarios
+                               ) {
+    public static VisualizacionDto of(Visualizacion v){
         return new VisualizacionDto(
                 v.getId(),
                 v.getPostear().getId(),
@@ -31,8 +31,8 @@ public record VisualizacionDto(UUID idVisualizacion,
                 v.getPostear().getMenciones(),
                 v.getPostear().getComentarios().stream().map(ComentariosDto::of).collect(Collectors.toList()),
                 v.getPostear().getComentarios() == null ? 0 : v.getPostear().getComentarios().size(),
-                v.getPostear().getFavoritoList() == null ? 0 : v.getPostear().getFavoritoList().size(),
-                loHavisto
+                v.getPostear().getFavoritoList() == null ? 0 : v.getPostear().getFavoritoList().size()
+
         );
     }
 }

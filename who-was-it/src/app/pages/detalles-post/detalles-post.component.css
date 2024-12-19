@@ -19,3 +19,53 @@
     display: none;
     height: 600px;
 }
+
+
+.ganador-animacion {
+    animation: ganadorBrillo 2s infinite;
+    border: 2px solid gold; /* Resaltar el comentario con un borde dorado */
+  }
+  
+  
+  
+  /* Animación de brillo */
+  @keyframes ganadorBrillo {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Luz dorada */
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+  }
+  
+  /* Animación de vibración */
+  .vibrar-animacion {
+    animation: vibrarSuave 0.5s infinite ease-in-out;
+  }
+  
+  /* Animación de vibración suave */
+  @keyframes vibrarSuave {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-1px, 1px);
+    }
+    50% {
+      transform: translate(1px, -1px);
+    }
+    75% {
+      transform: translate(-1px, -1px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+  
+  

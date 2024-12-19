@@ -54,7 +54,7 @@ export class UsuarioServiceService {
       });
   }
 
-  crearPost(contenido:string,id:string,idCuestionario:string,postUnaVez:boolean):Observable<PostResponse>{
+  crearPost(contenido:string,id:string,idCuestionario:string,postUnaVez:boolean,desorden:boolean):Observable<PostResponse>{
     let token = localStorage.getItem('TOKEN');
 
     return this.http.post<PostResponse>(`${this.url}/usuario/nuevo/post`,
@@ -62,7 +62,8 @@ export class UsuarioServiceService {
         "contenido": `${contenido}`,
         "id": `${id}`,
         "idCuestionario":`${idCuestionario}`,
-        "postUnaVez":`${postUnaVez}`
+        "postUnaVez":`${postUnaVez}`,
+        "desorden":`${desorden}`
       },{
         headers: {
           accept: 'application/json',

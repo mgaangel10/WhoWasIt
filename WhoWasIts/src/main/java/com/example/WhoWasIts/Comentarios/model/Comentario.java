@@ -39,5 +39,7 @@ public class Comentario {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    private boolean ganador;
+
 
 }

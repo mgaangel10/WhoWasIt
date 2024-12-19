@@ -7,13 +7,15 @@ import java.util.UUID;
 public record ComentariosDto(UUID id,
                              String contenido,
                              String nombreUsuario,
-                             String foto) {
+                             String foto,
+                             boolean ganador) {
     public static ComentariosDto of(Comentario c){
         return new ComentariosDto(
                 c.getId(),
                 c.getContenido(),
                 c.getUsuario().getUsuarioAnonimo().getNombreDelUsuario(),
-                c.getUsuario().getUsuarioAnonimo().getAvatar().getImagen()
+                c.getUsuario().getUsuarioAnonimo().getAvatar().getImagen(),
+                c.isGanador()
         );
     }
 }

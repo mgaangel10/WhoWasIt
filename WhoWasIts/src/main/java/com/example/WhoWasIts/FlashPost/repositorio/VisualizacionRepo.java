@@ -1,7 +1,7 @@
-package com.example.WhoWasIts.Postear.Repositorio;
+package com.example.WhoWasIts.FlashPost.repositorio;
 
 import com.example.WhoWasIts.Postear.model.Postear;
-import com.example.WhoWasIts.Postear.model.Visualizacion;
+import com.example.WhoWasIts.FlashPost.model.Visualizacion;
 import com.example.WhoWasIts.users.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 

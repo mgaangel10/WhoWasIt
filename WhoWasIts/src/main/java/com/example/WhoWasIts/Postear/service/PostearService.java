@@ -1,21 +1,15 @@
 package com.example.WhoWasIts.Postear.service;
 
-import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
-import com.example.WhoWasIts.Comentarios.model.Comentario;
 import com.example.WhoWasIts.Cuestionario.Repositorio.CuestionarioRepo;
 import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
+import com.example.WhoWasIts.FlashPost.model.Visualizacion;
 import com.example.WhoWasIts.Postear.Dto.CrearPostDto;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
-import com.example.WhoWasIts.Postear.Dto.VisualizacionDto;
 import com.example.WhoWasIts.Postear.Repositorio.PostearRepo;
-import com.example.WhoWasIts.Postear.Repositorio.VisualizacionRepo;
+import com.example.WhoWasIts.FlashPost.repositorio.VisualizacionRepo;
 import com.example.WhoWasIts.Postear.model.Postear;
-import com.example.WhoWasIts.Postear.model.Visualizacion;
-import com.example.WhoWasIts.UsuarioAnonimo.Dto.UsuarioAnonimoDto;
-import com.example.WhoWasIts.UsuarioAnonimo.model.Avatar;
 import com.example.WhoWasIts.UsuarioAnonimo.model.UsuarioAnonimo;
 import com.example.WhoWasIts.UsuarioAnonimo.repositorio.UsuarioAnonimoRepo;
-import com.example.WhoWasIts.UsuarioAnonimo.service.UsuarioAnonimoService;
 import com.example.WhoWasIts.users.model.Usuario;
 import com.example.WhoWasIts.users.repositorio.UsuarioRepo;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -100,6 +91,14 @@ public class PostearService {
                     postear.setPostUnaSolaVez(true);
                 }
 
+                if (crearPostDto.desorden()){
+                    postear.setPalabrasDesordenadas(true);
+                    String conten = desordenarContenido(crearPostDto.contenido());
+                    postear.setPalabraDesordenada(conten);
+                }else {
+                    postear.setPalabrasDesordenadas(false);
+                }
+
                 // Guarda el post/repost y devuelve el DTO
                 postearRepo.save(postear);
                 String tiempoPublicado = calcularTiempoPublicado(postear.getFechaHora());
@@ -113,6 +112,25 @@ public class PostearService {
             throw new IllegalStateException("Principal no es una instancia de UserDetails.");
         }
     }
+    public String desordenarContenido(String input) {
+        // Convertir la cadena en una lista de caracteres
+        List<Character> characters = new ArrayList<>();
+        for (char c : input.toCharArray()) {
+            characters.add(c);
+        }
+
+        // Desordenar la lista
+        Collections.shuffle(characters);
+
+        // Reconstruir la cadena desordenada
+        StringBuilder resultado = new StringBuilder();
+        for (char c : characters) {
+            resultado.append(c);
+        }
+
+        return resultado.toString();
+    }
+
     public String calcularTiempoPublicado(LocalDateTime fechaHora) {
         LocalDateTime ahora = LocalDateTime.now();
         Duration duracion = Duration.between(fechaHora, ahora);
@@ -141,14 +159,22 @@ public class PostearService {
             String nombre= ((UserDetails)principal).getUsername();
             Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
             if (usuario.isPresent()){
-              List<Postear> postears = postearRepo.findAll();
+                List<Postear> postears = postearRepo.findAll();
+                List<Visualizacion> visualizacions = visualizacionRepo.findAll();
+                List<Visualizacion> visualizacions1 = visualizacions.stream().filter(visualizacion -> visualizacion.getUsuario().getId().equals(usuario.get().getId())).collect(Collectors.toList());
+                if (visualizacions1.isEmpty()){
+                   postears.forEach(postear -> postear.setVisualizacions(new ArrayList<>()));
+                }
+
 
               List<Postear> postears1 = postears.stream().map(postear -> {
                   String tiempo = calcularTiempoPublicado(postear.getFechaHora());
                   postear.setTiempoPublicado(tiempo);
                   return postearRepo.save(postear);
               }).collect(Collectors.toList());
+
               List<PostDto> postDtos = postears1.stream().map(PostDto::of).collect(Collectors.toList());
+
 
 
               return postDtos;
@@ -191,49 +217,7 @@ public class PostearService {
         return null;
     }
 
-    public boolean verPostUnaVez(UUID postId){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (principal instanceof UserDetails) {
-            String nombre= ((UserDetails)principal).getUsername();
-            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
-            Optional<Postear> postear = postearRepo.findById(postId);
-            if (usuario.isPresent()){
-                Optional<Visualizacion> visualizacion = visualizacionRepo.findByUsuarioAndPostear(usuario.get(), postear.get());
-                if (visualizacion.isPresent()) {
-                    LocalDateTime fechaVisualizacion = visualizacion.get().getFechaVisualizacion();
-                    LocalDateTime limite = fechaVisualizacion.plusHours(1);
-                    return LocalDateTime.now().isBefore(limite);
-                }
-                return true;
-            }
-        }
-        return  false;
-    }
-
-    public VisualizacionDto registrarVisualizacion(UUID postID){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            String nombre= ((UserDetails)principal).getUsername();
-            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
-            Optional<Postear> postear = postearRepo.findById(postID);
-            if (usuario.isPresent()){
-                if (verPostUnaVez(postID)) {
-                  Visualizacion visualizacion1 = new Visualizacion();
-                  visualizacion1.setUsuario(usuario.get());
-                  visualizacion1.setPostear(postear.get());
-                  visualizacion1.setFechaVisualizacion(LocalDateTime.now());
-
-                   visualizacionRepo.save(visualizacion1);
-                  return VisualizacionDto.of(visualizacion1,true);
-
-                }
-            }
-        }
-        return null;
-
-    }
 
 
 

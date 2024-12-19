@@ -21,12 +21,13 @@ export class VerMencionesComponent implements OnInit{
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
     postUnaVez : new FormControl(),
+    desorden: new FormControl()
   })
 
   repost(modal: any) {
     console.log('Datos enviados al servidor:', this.crerRepost.value);
 
-    this.service.crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!,this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!)
+    this.service.crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!,this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerRepost.value.desorden!)
       .subscribe((l: PostResponse) => {
         
         modal.close(); // Cierra el modal después de la respuesta exitosa

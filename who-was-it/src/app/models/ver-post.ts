@@ -1,6 +1,7 @@
 export interface VerPost {
     id:               string;
     contenido:        string;
+    palabraDesordenada: string;
     nombreUsuario:    string;
     foto:             string;
     tiempoPublicado:  null;
@@ -13,6 +14,8 @@ export interface VerPost {
     recomendar:       boolean;
     cuestionarioDto:  CuestionarioDto;
     soloUnaVez:       boolean;
+    desorden:         boolean;
+    visualizacionDtos: VisualizacionDto[] | null;
 }
 
 export interface ComentariosDto {
@@ -20,6 +23,21 @@ export interface ComentariosDto {
     contenido:     string;
     nombreUsuario: string;
     foto:          string;
+    ganador:       boolean;
+}
+
+export interface VisualizacionDto {
+    idVisualizacion:      string;
+    idPost:               string;
+    idUsuario:            string;
+    foto:                 string;
+    nombreUsuario:        string;
+    tiempoPublicado:      string;
+    contenido:            string;
+    menciones:            string;
+    comentariosDtos:      any[];
+    numeroDeMegustas:     number;
+    numerosDeComentarios: number;
 }
 
 export interface CuestionarioDto {
