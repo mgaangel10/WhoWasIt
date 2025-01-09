@@ -1,5 +1,6 @@
 package com.example.WhoWasIts.FlashPost.service;
 
+import com.example.WhoWasIts.FlashPost.Dto.UsarioVeFlashPostDto;
 import com.example.WhoWasIts.FlashPost.model.Visualizacion;
 import com.example.WhoWasIts.FlashPost.repositorio.VisualizacionRepo;
 import com.example.WhoWasIts.FlashPost.Dto.VisualizacionDto;
@@ -35,7 +36,7 @@ public class FlashPostService {
                 Optional<Visualizacion> visualizacion = visualizacionRepo.findByUsuarioAndPostear(usuario.get(), postear.get());
                 if (visualizacion.isPresent()) {
                     LocalDateTime fechaVisualizacion = visualizacion.get().getFechaVisualizacion();
-                    LocalDateTime limite = fechaVisualizacion.plusHours(1);
+                    LocalDateTime limite = fechaVisualizacion.plusMinutes(1);
                     return LocalDateTime.now().isBefore(limite);
                 }
                 return true;
@@ -61,9 +62,11 @@ public class FlashPostService {
                     visualizacionRepo.save(visualizacion1);
                     postear.get().getVisualizacions().add(visualizacion1);
                     postearRepo.save(postear.get());
+                    UsarioVeFlashPostDto.of(true);
                     return VisualizacionDto.of(visualizacion1);
 
                 }else {
+
                     return VisualizacionDto.of(null);
                 }
             }

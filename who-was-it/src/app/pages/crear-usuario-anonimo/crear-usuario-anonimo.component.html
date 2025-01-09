@@ -1,17 +1,31 @@
 
 <h1 class="text-center mt-5">Crear tu usuario anonimo</h1>
-<div class="div mx-auto mt-5 card shadow   bg-white rounded" style="width: 40%; height: 300px; border-radius: 15px;">
+<div class="div mx-auto mt-5 card shadow   bg-white rounded" style="width: 40%; height: 100%; border-radius: 15px;">
   <form [formGroup]="profileLogin" (ngSubmit)="login()">
     <div class="mb-3 mx-auto w-50 mt-5">
-      <label for="emailLog" class="form-label">Nombre de tu usuario</label>
+      <label for="emailLog" class="form-label">Nombre de tu usuario anonimo</label>
       <input type="email" class="form-control" id="emailLog" aria-describedby="emailHelp" formControlName="nombreUsuario">
 
 
     </div>
     <div class="mb-3 mx-auto w-50">
       <label for="exampleInputPassword1" class="form-label">Foto</label>
-      <input type="text" class="form-control" id="exampleInputPassword1" formControlName="foto">
+      <div *ngFor="let a of avatares; let i = index" class="d-flex align-items-center mb-2">
+        <div class="form-check me-3">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="flexRadioDefault"
+            [id]="'flexRadioDefault' + i"
+            [value]="a.imagen"
+            formControlName="foto"
+          />
+          <label class="form-check-label" [for]="'flexRadioDefault' + i"></label>
+        </div>
+        <img [src]="a.imagen" alt="avatar" style="width: 150px; border-radius: 50%;" />
+      </div>
     </div>
+    
 
     <div class="mb-3 mx-auto w-50">
       <label for="exampleInputPassword1" class="form-label">Conocido Como...</label>

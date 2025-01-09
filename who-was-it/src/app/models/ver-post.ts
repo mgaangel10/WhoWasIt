@@ -38,6 +38,10 @@ export interface VisualizacionDto {
     comentariosDtos:      any[];
     numeroDeMegustas:     number;
     numerosDeComentarios: number;
+    usarioVeFlashPostDto: UsarioVeFlashPostDto;
+}
+export interface UsarioVeFlashPostDto{
+    loHavisto: boolean;
 }
 
 export interface CuestionarioDto {

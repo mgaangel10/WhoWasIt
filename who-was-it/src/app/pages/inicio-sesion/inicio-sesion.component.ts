@@ -26,7 +26,13 @@ export class InicioSesionComponent {
       .subscribe((l: LoginResponse) => {
         localStorage.setItem('TOKEN', l.token);
         localStorage.setItem('USER_ID', l.id);
-        this.router.navigate(['/usuario-anonimo']);
+        if(l.usuarioAnonimo === 'no'){
+          this.router.navigate(['/usuario-anonimo']);
+        }else {
+          this.router.navigate(['/home']);
+        }
+        
+        
 
 
       });

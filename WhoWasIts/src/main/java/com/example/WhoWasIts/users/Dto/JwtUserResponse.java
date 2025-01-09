@@ -18,15 +18,17 @@ public class JwtUserResponse extends PostRegistroDto{
 
     private String token;
 
-    public JwtUserResponse(PostRegistroDto postRegistroDto){
-        id = postRegistroDto.id;
+    public JwtUserResponse(PostRegistroDto postRegistroDto) {
+        id = postRegistroDto.getId();
         fullname = postRegistroDto.getFullname();
-        username=postRegistroDto.getUsername();
-        email= postRegistroDto.getEmail();
-        fotoUrl= postRegistroDto.fotoUrl;
+        username = postRegistroDto.getUsername();
+        email = postRegistroDto.getEmail();
+        fotoUrl = postRegistroDto.getFotoUrl(); // Asegúrate de que no sea null
+        usuarioAnonimo = postRegistroDto.getUsuarioAnonimo(); // Manejado en PostRegistroDto
         creadoen = postRegistroDto.getCreadoen();
-        birthdate=postRegistroDto.getBirthdate();
+        birthdate = postRegistroDto.getBirthdate();
     }
+
 
     public  static  JwtUserResponse ofUsuario (Usuario usuario, String token){
         JwtUserResponse jwtUserResponse= new JwtUserResponse(PostRegistroDto.Usuario(usuario));

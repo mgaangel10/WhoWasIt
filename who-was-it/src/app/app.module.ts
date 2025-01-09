@@ -4,8 +4,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatStepperModule } from '@angular/material/stepper'; // Importar MatStepperModule
 
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InicioSesionComponent } from './pages/inicio-sesion/inicio-sesion.component';
@@ -18,6 +22,7 @@ import { VerMencionesComponent } from './pages/ver-menciones/ver-menciones.compo
 import { HeaderComponent } from './componentes/header/header.component';
 import { RepostStackComponent } from './pages/repost-stack/repost-stack.component';
 import { CharlasPageComponent } from './pages/charlas-page/charlas-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 @NgModule({
   declarations: [
@@ -30,14 +35,19 @@ import { CharlasPageComponent } from './pages/charlas-page/charlas-page.componen
     VerMencionesComponent,
     HeaderComponent,
     RepostStackComponent,
-    CharlasPageComponent
+    CharlasPageComponent,
+    RegisterPageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    MatStepperModule,
     MatSlideToggleModule,
     ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
     HttpClientModule,
+    MatInputModule,
     NgbModule,
     AppRoutingModule
 ]

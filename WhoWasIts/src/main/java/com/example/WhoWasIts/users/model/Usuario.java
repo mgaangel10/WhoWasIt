@@ -36,6 +36,10 @@ public class Usuario extends User {
     @JsonManagedReference
     private List<Favorito> favoritos ;
 
+    private String pais;
+    private String provincia;
+    private String pueblo;
+
 
 
 

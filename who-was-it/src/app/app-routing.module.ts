@@ -7,9 +7,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { VerMencionesComponent } from './pages/ver-menciones/ver-menciones.component';
 import { DetallesPostComponent } from './pages/detalles-post/detalles-post.component';
 import { CharlasPageComponent } from './pages/charlas-page/charlas-page.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
 
 const routes: Routes = [
   { path: 'login', component: InicioSesionComponent},
+  { path: 'register', component: RegisterPageComponent},
   { path: 'usuario-anonimo', component: CrearUsuarioAnonimoComponent},
   { path: 'menciones', component: VerMencionesComponent},
   { path: 'charlas', component: CharlasPageComponent},
@@ -19,7 +22,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent},
 
 
-  { path: '**', redirectTo: '/login', pathMatch: 'full' }
+  { path: '**', redirectTo: '/register', pathMatch: 'full' }
 
 
 ];

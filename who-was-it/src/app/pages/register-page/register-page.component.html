@@ -1,0 +1,83 @@
+<div class="container ">
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <!-- Paso 1 -->
+    <mat-step [stepControl]="step1Form">
+      <form [formGroup]="step1Form">
+        <ng-template matStepLabel>Información Personal</ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" type="text" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="lastName" type="text" required />
+        </mat-form-field>
+
+        <div>
+          <button mat-button matStepperNext [disabled]="!step1Form.valid">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Paso 2 -->
+    <mat-step [stepControl]="step2Form">
+      <form [formGroup]="step2Form">
+        <ng-template matStepLabel>Ubicación</ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>País</mat-label>
+          <input matInput formControlName="pais" type="text" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Provincia</mat-label>
+          <input matInput formControlName="provincia" type="text" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pueblo</mat-label>
+          <input matInput formControlName="pueblo" type="text" />
+        </mat-form-field>
+
+        <div>
+          <button mat-button matStepperPrevious>Anterior</button>
+          <button mat-button matStepperNext [disabled]="!step2Form.valid">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Paso 3 -->
+    <mat-step [stepControl]="step3Form">
+      <form [formGroup]="step3Form">
+        <ng-template matStepLabel>Seguridad</ng-template>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="password" type="password" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Número de Teléfono</mat-label>
+          <input matInput formControlName="phoneNumber" type="tel" />
+        </mat-form-field>
+
+        <div>
+          <button mat-button matStepperPrevious>Anterior</button>
+          <button mat-raised-button color="primary" type="submit" (click)="submit()" [disabled]="!step3Form.valid">
+            Enviar
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <div>
+    <h5 class="text-center mt-2" [routerLink]="['/login']">
+      <u>¿Ya tienes cuenta?</u>
+    </h5>
+  </div>
+</div>

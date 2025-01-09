@@ -44,9 +44,12 @@ public class ComentarioService {
                     comentario.setPostear(postear.get());
                     comentario.setUsuario(usuario.get());
                     comentarioRepo.save(comentario);
-                    if (comentario.getPostear().getContenido().equalsIgnoreCase(comentario.getContenido())){
-                        comentario.setGanador(true);
+                    if (postear.get().isPalabrasDesordenadas()){
+                        if (comentario.getPostear().getContenido().equalsIgnoreCase(comentario.getContenido())){
+                            comentario.setGanador(true);
+                        }
                     }
+
                     comentarioRepo.save(comentario);
 
                 return ComentariosDto.of(comentario);

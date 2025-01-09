@@ -30,7 +30,7 @@ export class HomePageComponent implements OnInit {
   darMegusta!: DarMegusta;
   perfil!: VerPerfil;
   recomened!: VerPost;
-  
+  usuerName!: string;
   comprobarUsuarioVotado!:string;
   idCuestionario!:string;
   op:OpcionesResponse [] = [];
@@ -218,6 +218,9 @@ toggleCuestionario() {
   verLosPost() {
     this.service.verPost().subscribe((posts: VerPost[]) => {
       this.verPosts = posts;
+      let nombre = localStorage.getItem('USERNAME');
+      this.usuerName = nombre!;
+      console.log('nombre de uuario: '+this.usuerName)
       console.log('Posts:', this.verPosts);
     });
   }

@@ -4,6 +4,7 @@ import com.example.WhoWasIts.Cuestionario.Repositorio.CuestionarioRepo;
 import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.FlashPost.model.Visualizacion;
 import com.example.WhoWasIts.Postear.Dto.CrearPostDto;
+import com.example.WhoWasIts.Postear.Dto.EstadisticasPostDto;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
 import com.example.WhoWasIts.Postear.Repositorio.PostearRepo;
 import com.example.WhoWasIts.FlashPost.repositorio.VisualizacionRepo;
@@ -152,36 +153,45 @@ public class PostearService {
     }
 
 
-    public List<PostDto> verPost(){
+    public List<PostDto> verPost() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
-            String nombre= ((UserDetails)principal).getUsername();
+            String nombre = ((UserDetails) principal).getUsername();
             Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
-            if (usuario.isPresent()){
+            if (usuario.isPresent()) {
                 List<Postear> postears = postearRepo.findAll();
                 List<Visualizacion> visualizacions = visualizacionRepo.findAll();
-                List<Visualizacion> visualizacions1 = visualizacions.stream().filter(visualizacion -> visualizacion.getUsuario().getId().equals(usuario.get().getId())).collect(Collectors.toList());
-                if (visualizacions1.isEmpty()){
-                   postears.forEach(postear -> postear.setVisualizacions(new ArrayList<>()));
+
+                // Filtrar las visualizaciones del usuario actual
+                List<Visualizacion> visualizacionsUsuario = visualizacions.stream()
+                        .filter(visualizacion -> visualizacion.getUsuario().getId().equals(usuario.get().getId()))
+                        .collect(Collectors.toList());
+
+                // Verificar si no hay visualizaciones registradas o si todas están expiradas
+                boolean todasVisualizacionesExpiradas = visualizacionsUsuario.stream().allMatch(visualizacion ->
+                        visualizacion.getFechaVisualizacion().plusMinutes(1).isBefore(LocalDateTime.now())
+                );
+
+                if (visualizacionsUsuario.isEmpty() || todasVisualizacionesExpiradas) {
+                    // Si no hay visualizaciones o todas están expiradas, limpiar visualizaciones de cada post
+                    postears.forEach(postear -> postear.setVisualizacions(new ArrayList<>()));
                 }
 
+                // Actualizar tiempo publicado para cada post
+                List<Postear> postearsActualizados = postears.stream().map(postear -> {
+                    String tiempo = calcularTiempoPublicado(postear.getFechaHora());
+                    postear.setTiempoPublicado(tiempo);
+                    return postearRepo.save(postear);
+                }).collect(Collectors.toList());
 
-              List<Postear> postears1 = postears.stream().map(postear -> {
-                  String tiempo = calcularTiempoPublicado(postear.getFechaHora());
-                  postear.setTiempoPublicado(tiempo);
-                  return postearRepo.save(postear);
-              }).collect(Collectors.toList());
-
-              List<PostDto> postDtos = postears1.stream().map(PostDto::of).collect(Collectors.toList());
-
-
-
-              return postDtos;
+                // Convertir los posts a DTOs y retornarlos
+                return postearsActualizados.stream().map(PostDto::of).collect(Collectors.toList());
             }
         }
         return null;
     }
+
 
     public PostDto recomendar(UUID id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -216,6 +226,26 @@ public class PostearService {
         }
         return null;
     }
+
+    public EstadisticasPostDto estadisticasPostDto (UUID idPost){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String nombre= ((UserDetails)principal).getUsername();
+            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            Optional<Postear> postear1 = postearRepo.findById(idPost);
+            if (usuario.isPresent()){
+                if (postear1.get().getUsuarioAnonimo().getUsuario().getId().equals(usuario.get().getId())){
+                    return EstadisticasPostDto.of(postear1.get());
+                }
+            }
+        }
+        return null;
+    }
+
+
+
+
 
 
 

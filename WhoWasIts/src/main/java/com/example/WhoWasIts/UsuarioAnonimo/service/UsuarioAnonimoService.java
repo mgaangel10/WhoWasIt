@@ -99,4 +99,19 @@ public class UsuarioAnonimoService {
         return null;
     }
 
+    public List<Avatar> todosLOsAvatares(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String nombre= ((UserDetails)principal).getUsername();
+            Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            if (usuario.isPresent()){
+                List<Avatar> avatars = avatarRepo.findAll();
+                return avatars;
+            }
+        }
+
+        return null;
+    }
+
 }

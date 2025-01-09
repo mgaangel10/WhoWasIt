@@ -39,4 +39,14 @@
     }
   }
   
+  .visto {
+    background-color: lightgreen; /* Cambia el color según lo que necesites */
+    color: black; /* Texto */
+  }
+  
+  .no-visto {
+    background-color: lightcoral;
+    color: white;
+  }
+  
   

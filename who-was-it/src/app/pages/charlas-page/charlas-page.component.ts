@@ -65,7 +65,7 @@ export class CharlasPageComponent implements OnInit {
   iniciarCuentaRegresiva() {
     const ahora = new Date();
     const horaInicioCharlas = new Date();
-    horaInicioCharlas.setHours(15, 40, 0, 0);
+    horaInicioCharlas.setHours(0,51, 0, 0);
 
     if (ahora > horaInicioCharlas) {
       horaInicioCharlas.setDate(horaInicioCharlas.getDate() + 1);

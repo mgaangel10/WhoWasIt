@@ -3,6 +3,8 @@ package com.example.WhoWasIts.UsuarioAnonimo.controller;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
 import com.example.WhoWasIts.UsuarioAnonimo.Dto.CrearUsuarioAnoninoDto;
 import com.example.WhoWasIts.UsuarioAnonimo.Dto.UsuarioAnonimoDto;
+import com.example.WhoWasIts.UsuarioAnonimo.model.Avatar;
+import com.example.WhoWasIts.UsuarioAnonimo.repositorio.AvatarRepo;
 import com.example.WhoWasIts.UsuarioAnonimo.service.UsuarioAnonimoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +39,11 @@ public class UsuarioanonimoController {
     public ResponseEntity<List<PostDto>> verMenciones(){
         List<PostDto> postDtos = usuarioAnonimoService.verMenciones();
         return ResponseEntity.ok(postDtos);
+    }
+
+    @GetMapping("usuario/todos/avatares")
+    public ResponseEntity<List<Avatar>> todosAvatares(){
+        List<Avatar> avatars = usuarioAnonimoService.todosLOsAvatares();
+        return ResponseEntity.ok(avatars);
     }
 }

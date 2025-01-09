@@ -18,6 +18,10 @@ import { VerMensajes } from '../models/ver-mensajes';
 import { CharlaResponse } from '../models/charla-response';
 import { VerCharla } from '../models/ver-charla';
 import { PostUnaVezResponse } from '../models/post-una-vez-reponse';
+import { TodosAvatares } from '../models/todos-avatares';
+import { EstadisticasDelPost } from '../models/estadisticas-del-post';
+import { RegistroResponse } from '../models/registro-response';
+
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +37,22 @@ export class UsuarioServiceService {
       {
         "email": `${email}`,
         "password": `${password}`
+      },{
+        
+      });
+  }
+
+  RegistroUsuario(email:string,name:string,lastName:string,pais:string,provincia:string,pueblo:string,password:string,phoneNumber:string):Observable<RegistroResponse>{
+    return this.http.post<RegistroResponse>(`${this.url}/auth/register/user`,
+      {
+        "email": `${email}`,
+        "name": `${name}`,
+        "lastName": `${lastName}`,
+        "pais": `${pais}`,
+        "provincia": `${provincia}`,
+        "pueblo": `${pueblo}`,
+        "password": `${password}`,
+        "phoneNumber": `${phoneNumber}`,
       },{
         
       });
@@ -305,4 +325,32 @@ export class UsuarioServiceService {
       });
 
   }
+  
+  todosAvatares():Observable<TodosAvatares[]>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<TodosAvatares[]>(`${this.url}/usuario/todos/avatares`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+  }
+
+  estadisticasDelPost(id:string):Observable<EstadisticasDelPost>{
+    let token = localStorage.getItem('TOKEN');
+
+    return this.http.get<EstadisticasDelPost>(`${this.url}/usuario/estadisticas/del/post/${id}`,
+     {
+        headers: {
+          accept: 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+  }
+
+
 }
