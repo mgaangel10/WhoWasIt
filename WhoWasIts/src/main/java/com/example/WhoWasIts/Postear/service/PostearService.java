@@ -8,7 +8,9 @@ import com.example.WhoWasIts.Postear.Dto.EstadisticasPostDto;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
 import com.example.WhoWasIts.Postear.Repositorio.PostearRepo;
 import com.example.WhoWasIts.FlashPost.repositorio.VisualizacionRepo;
+import com.example.WhoWasIts.Postear.Repositorio.PueblosRepo;
 import com.example.WhoWasIts.Postear.model.Postear;
+import com.example.WhoWasIts.Postear.model.Pueblos;
 import com.example.WhoWasIts.UsuarioAnonimo.model.UsuarioAnonimo;
 import com.example.WhoWasIts.UsuarioAnonimo.repositorio.UsuarioAnonimoRepo;
 import com.example.WhoWasIts.users.model.Usuario;
@@ -34,6 +36,7 @@ public class PostearService {
     private final UsuarioRepo usuarioRepo;
     private final CuestionarioRepo cuestionarioRepo;
     private final VisualizacionRepo visualizacionRepo;
+    private final PueblosRepo pueblosRepo;
 
 
     public String obtenerMencionesComoString(String contenido) {
@@ -45,14 +48,14 @@ public class PostearService {
         }
         return menciones.toString().trim();
     }
-    public PostDto crearPost(CrearPostDto crearPostDto) {
+    public PostDto crearPost(CrearPostDto crearPostDto,UUID idPueblo) {
         // Obtiene el usuario autenticado
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails userDetails) {
             String email = userDetails.getUsername();
             Optional<Usuario> usuarioOptional = usuarioRepo.findByEmailIgnoreCase(email);
-
+            Optional<Pueblos> pueblos = pueblosRepo.findById(idPueblo);
             if (usuarioOptional.isPresent()) {
                 Usuario usuario = usuarioOptional.get();
                 UsuarioAnonimo usuarioAnonimo = usuario.getUsuarioAnonimo();
@@ -61,6 +64,7 @@ public class PostearService {
                 Postear postear = new Postear();
                 postear.setContenido(crearPostDto.contenido());
                 postear.setUsuarioAnonimo(usuarioAnonimo);
+                postear.setPueblos(pueblos.get());
                 postear.setFechaHora(LocalDateTime.now());
                 postear.setMenciones(obtenerMencionesComoString(crearPostDto.contenido()));
 
@@ -99,6 +103,8 @@ public class PostearService {
                 }else {
                     postear.setPalabrasDesordenadas(false);
                 }
+
+
 
                 // Guarda el post/repost y devuelve el DTO
                 postearRepo.save(postear);

@@ -4,6 +4,7 @@ import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
 import com.example.WhoWasIts.Cuestionario.Dto.CuestionarioDto;
 import com.example.WhoWasIts.FlashPost.Dto.VisualizacionDto;
 import com.example.WhoWasIts.Postear.model.Postear;
+import com.example.WhoWasIts.Postear.model.Pueblos;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,8 @@ public record PostDto(UUID id,
                       CuestionarioDto cuestionarioDto,
                       boolean soloUnaVez,
                       boolean desorden,
-                      List<VisualizacionDto> visualizacionDtos
+                      List<VisualizacionDto> visualizacionDtos,
+                      Pueblos pueblos
 
 
                       ) {
@@ -49,7 +51,8 @@ public record PostDto(UUID id,
                 p.getCuestionario() != null ? CuestionarioDto.of(p.getCuestionario()) : null,
                 p.isPostUnaSolaVez(),
                 p.isPalabrasDesordenadas(),
-                p.getVisualizacions() == null ? null : p.getVisualizacions().stream().map(VisualizacionDto::of).collect(Collectors.toList())
+                p.getVisualizacions() == null ? null : p.getVisualizacions().stream().map(VisualizacionDto::of).collect(Collectors.toList()),
+                p.getPueblos()
                 // Verifica si el cuestionario es null
         );
     }

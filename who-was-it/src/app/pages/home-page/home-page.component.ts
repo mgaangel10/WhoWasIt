@@ -13,6 +13,7 @@ import { ResultadoVotacion } from '../../models/resultado-votacion';
 import { VerOpciones } from '../../models/ver-opciones';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostUnaVezResponse } from '../../models/post-una-vez-reponse';
+import { ProvinciasResponse } from '../../models/provincias-response';
 
 @Component({
   selector: 'app-home-page',
@@ -26,9 +27,12 @@ export class HomePageComponent implements OnInit {
   verPosts: VerPost[] = [];
   modal: any;
   idPost!: string;
+  idPueblo!:string;
   unaVez!:PostUnaVezResponse;
   darMegusta!: DarMegusta;
   perfil!: VerPerfil;
+  nombrePueblo!:string;
+  todasProvincias: ProvinciasResponse [] = [];
   recomened!: VerPost;
   usuerName!: string;
   comprobarUsuarioVotado!:string;
@@ -83,10 +87,40 @@ toggleCuestionario() {
   ngOnInit(): void {
     this.verLosPost();
     this.verPerfil();
+    this.filtrarPost();
+    this.provincias();
     this.usuarioActualId = localStorage.getItem('User_ID');
     this.verLasOpcionesDelCUestionario();
     this.resultadoDeLaVotacion();
     this.verPostUnaVEz(this.idPost);
+  }
+
+  provincias(){
+    this.service.AllProvincias().subscribe(r=>{
+      this.todasProvincias = r;
+    })
+  }
+
+  cogerIdPueblo(id:string,nombre:string){
+    this.idPueblo = id;
+    this.nombrePueblo = nombre;
+    console.log('id del pueblo: '+this.idPueblo)
+    this.filtrarPost();
+  }
+  filtrarPost(){
+    if(this.idPueblo!=null && this.nombrePueblo!=null){
+      this.service.FiltrarPost(this.idPueblo).subscribe(r=>{
+        this.verPosts = r;
+        console.log('se esta filtrando')
+      })
+    }else{
+      this.nombrePueblo = 'La puebla del rio';
+      this.service.FiltrarPost('141f26c9-640b-4e4e-aeb5-bcce5a88d79a').subscribe(r=>{
+        this.verPosts = r;
+        console.log('se esta filtrando')
+      })
+    }
+ 
   }
 
   verPostUnaVEz(id:string){
@@ -182,10 +216,10 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .crearPost(this.idPueblo,this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
         console.log('hola'+post);
-        this.verLosPost();
+        this.filtrarPost();
         modal.close();
         this.resetCuestionario();
       });
@@ -198,7 +232,7 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .crearPost(this.idPueblo,this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
         
         this.verLosPost();
@@ -216,13 +250,14 @@ toggleCuestionario() {
 
   // Obtener Posts
   verLosPost() {
-    this.service.verPost().subscribe((posts: VerPost[]) => {
-      this.verPosts = posts;
+   // this.service.verPost().subscribe((posts: VerPost[]) => {
+     // this.verPosts = posts;
+     this.filtrarPost();
       let nombre = localStorage.getItem('USERNAME');
       this.usuerName = nombre!;
       console.log('nombre de uuario: '+this.usuerName)
       console.log('Posts:', this.verPosts);
-    });
+    //});
   }
 
   // Recomendar Post

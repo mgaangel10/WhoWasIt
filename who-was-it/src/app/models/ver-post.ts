@@ -16,6 +16,18 @@ export interface VerPost {
     soloUnaVez:       boolean;
     desorden:         boolean;
     visualizacionDtos: VisualizacionDto[] | null;
+    pueblos:            Pueblos;
+}
+
+export interface Pueblos {
+    id:        string;
+    pueblos:   string;
+    provincia: Provincia;
+}
+
+export interface Provincia {
+    id:        string;
+    provincia: string;
 }
 
 export interface ComentariosDto {

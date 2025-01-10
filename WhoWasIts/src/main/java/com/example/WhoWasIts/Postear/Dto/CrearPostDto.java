@@ -8,5 +8,6 @@ public record CrearPostDto(String contenido,
                            boolean postUnaVez,
                            boolean desorden
 
+
                            ) {
 }

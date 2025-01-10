@@ -75,5 +75,9 @@ public class Postear {
     private String palabraDesordenada;
 
     @OneToOne
+    private Pueblos pueblos;
+
+
+    @OneToOne
     private Cuestionario cuestionario;
 }

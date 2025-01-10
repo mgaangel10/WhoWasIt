@@ -21,6 +21,7 @@ import { PostUnaVezResponse } from '../models/post-una-vez-reponse';
 import { TodosAvatares } from '../models/todos-avatares';
 import { EstadisticasDelPost } from '../models/estadisticas-del-post';
 import { RegistroResponse } from '../models/registro-response';
+import { ProvinciasResponse } from '../models/provincias-response';
 
 
 @Injectable({
@@ -74,10 +75,10 @@ export class UsuarioServiceService {
       });
   }
 
-  crearPost(contenido:string,id:string,idCuestionario:string,postUnaVez:boolean,desorden:boolean):Observable<PostResponse>{
+  crearPost(idPueblo:string,contenido:string,id:string,idCuestionario:string,postUnaVez:boolean,desorden:boolean):Observable<PostResponse>{
     let token = localStorage.getItem('TOKEN');
 
-    return this.http.post<PostResponse>(`${this.url}/usuario/nuevo/post`,
+    return this.http.post<PostResponse>(`${this.url}/usuario/nuevo/post/${idPueblo}`,
       {
         "contenido": `${contenido}`,
         "id": `${id}`,
@@ -350,6 +351,28 @@ export class UsuarioServiceService {
         }
       });
 
+  }
+
+  AllProvincias():Observable<ProvinciasResponse[]>{
+    let token = localStorage.getItem('TOKEN');
+    return this.http.get<ProvinciasResponse[]>(`${this.url}/usuario/todas/provincias`,
+      {
+         headers: {
+           accept: 'application/json',
+           'Authorization': `Bearer ${token}`
+         }
+       });
+  }
+
+  FiltrarPost(id:string):Observable<VerPost[]>{
+    let token = localStorage.getItem('TOKEN');
+    return this.http.get<VerPost[]>(`${this.url}/usuario/filtrar/post/${id}`,
+      {
+         headers: {
+           accept: 'application/json',
+           'Authorization': `Bearer ${token}`
+         }
+       });
   }
 
 

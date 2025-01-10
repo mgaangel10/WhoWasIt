@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper'; // Importar MatStepperModule
+import {MatMenuModule} from '@angular/material/menu';
 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatInputModule } from '@angular/material/input';
@@ -42,6 +43,7 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     BrowserModule,
     FormsModule,
     MatStepperModule,
+    MatMenuModule,
     MatSlideToggleModule,
     ReactiveFormsModule,
     MatButtonModule,
