@@ -44,3 +44,4 @@ te sale un moton de ejemplo de modals elige el que mas te guste , una vez que lo
 para que quede bonito
 
   
+LO INTENTO AVER QUE TAL
