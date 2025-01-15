@@ -36,9 +36,9 @@ public class PostearController {
         return ResponseEntity.ok(postDtos);
     }
 
-    @PostMapping("usuario/recomendar/{id}")
-    public ResponseEntity<PostDto> recomendar(@PathVariable UUID id){
-        PostDto postDto = postearService.recomendar(id);
+    @PostMapping("usuario/recomendar/{id}/{idPueblo}")
+    public ResponseEntity<PostDto> recomendar(@PathVariable UUID id,@PathVariable UUID idPueblo){
+        PostDto postDto = postearService.recomendar(id,idPueblo);
         return ResponseEntity.status(201).body(postDto);
     }
 

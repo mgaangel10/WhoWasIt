@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,6 +31,25 @@ public class ProvinciasService {
     private final PostearRepo postearRepo;
     private final ProvinciasRepo provinciasRepo;
 
+    public String calcularTiempoPublicado(LocalDateTime fechaHora) {
+        LocalDateTime ahora = LocalDateTime.now();
+        Duration duracion = Duration.between(fechaHora, ahora);
+
+        long segundos = duracion.getSeconds();
+        long minutos = duracion.toMinutes();
+        long horas = duracion.toHours();
+        long dias = duracion.toDays();
+
+        if (segundos < 60) {
+            return  segundos + (segundos == 1 ? " segundo" : " segundos");
+        } else if (minutos < 60) {
+            return minutos + (minutos == 1 ? " minuto" : " minutos");
+        } else if (horas < 24) {
+            return  horas + (horas == 1 ? " hora" : " horas");
+        } else {
+            return + dias + (dias == 1 ? " día" : " días");
+        }
+    }
 
     public List<PostDto> filtrarPorPueblos(UUID id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -40,7 +61,12 @@ public class ProvinciasService {
             if (usuario.isPresent()){
                 List<Postear> postears = postearRepo.findAll();
                 List<Postear> postears1 = postears.stream().filter(postear -> postear.getPueblos().getId().equals(id)).collect(Collectors.toList());
-                List<PostDto> postDtos = postears1.stream().map(PostDto::of).collect(Collectors.toList());
+                List<Postear> postears2 = postears1.stream().map(postear -> {
+                    String tiempo = calcularTiempoPublicado(postear.getFechaHora());
+                    postear.setTiempoPublicado(tiempo);
+                    return postearRepo.save(postear);
+                }).collect(Collectors.toList());
+                List<PostDto> postDtos = postears2.stream().map(PostDto::of).collect(Collectors.toList());
                 return postDtos;
 
             }

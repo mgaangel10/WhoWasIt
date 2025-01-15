@@ -1,6 +1,6 @@
 /* Ocultar barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
 .scroll-container {
-    height: 90%;
+    height: 80%;
     overflow-y: scroll;
 }
 

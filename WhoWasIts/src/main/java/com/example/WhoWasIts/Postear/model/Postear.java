@@ -74,7 +74,7 @@ public class Postear {
 
     private String palabraDesordenada;
 
-    @OneToOne
+    @ManyToOne
     private Pueblos pueblos;
 
 

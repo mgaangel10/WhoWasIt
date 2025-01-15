@@ -14,6 +14,7 @@ import { VerOpciones } from '../../models/ver-opciones';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostUnaVezResponse } from '../../models/post-una-vez-reponse';
 import { ProvinciasResponse } from '../../models/provincias-response';
+import { EstadisticasDelPost } from '../../models/estadisticas-del-post';
 
 @Component({
   selector: 'app-home-page',
@@ -27,6 +28,7 @@ export class HomePageComponent implements OnInit {
   verPosts: VerPost[] = [];
   modal: any;
   idPost!: string;
+  obtenerIdPost!:string;
   idPueblo!:string;
   unaVez!:PostUnaVezResponse;
   darMegusta!: DarMegusta;
@@ -41,7 +43,7 @@ export class HomePageComponent implements OnInit {
   verOpcioness:VerOpciones [] = [];
   votacion!:VotarResponse;
   usuarioActualId: string | null = null;
-
+  estdisticas!:EstadisticasDelPost;
   resultadoVotacion: ResultadoVotacion [] = [];
   cuestionarioCreado!: CuestionarioResponse | null;
   opcionesList: string[] = [];
@@ -88,11 +90,19 @@ toggleCuestionario() {
     this.verLosPost();
     this.verPerfil();
     this.filtrarPost();
+    this.ObtenerEstadisticas();
     this.provincias();
     this.usuarioActualId = localStorage.getItem('User_ID');
     this.verLasOpcionesDelCUestionario();
     this.resultadoDeLaVotacion();
     this.verPostUnaVEz(this.idPost);
+  }
+
+  ObtenerEstadisticas(){
+    console.log('holaaaaaaaa '+this.obtenerIdPost)
+    this.service.estadisticasDelPost(this.obtenerIdPost).subscribe(r=>{
+      this.estdisticas = r;
+    })
   }
 
   provincias(){
@@ -106,6 +116,7 @@ toggleCuestionario() {
     this.nombrePueblo = nombre;
     console.log('id del pueblo: '+this.idPueblo)
     this.filtrarPost();
+
   }
   filtrarPost(){
     if(this.idPueblo!=null && this.nombrePueblo!=null){
@@ -130,6 +141,13 @@ toggleCuestionario() {
       this.verLosPost();
     })
   }
+
+  open(content:any,id:string) {
+    this.obtenerIdPost = id;
+    console.log('holaaaaaaaa '+this.obtenerIdPost)
+		this.modalService.open(content);
+    this.ObtenerEstadisticas();
+	}
 
   // Crear Cuestionario
   crearCuestionario() {
@@ -214,8 +232,8 @@ toggleCuestionario() {
     if (this.cuestionarioCreado) {
       this.crerPost.patchValue({ idCuestionario: this.cuestionarioCreado.id });
     }
-
-    this.service
+    if(this.idPueblo!=null){
+      this.service
       .crearPost(this.idPueblo,this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
         console.log('hola'+post);
@@ -223,6 +241,18 @@ toggleCuestionario() {
         modal.close();
         this.resetCuestionario();
       });
+    }else{
+      this.service
+      .crearPost('141f26c9-640b-4e4e-aeb5-bcce5a88d79a',this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .subscribe((post: PostResponse) => {
+        console.log('hola'+post);
+        this.filtrarPost();
+        modal.close();
+        this.resetCuestionario();
+      });
+    }
+
+    
   }
 
   // Publicar Repost
@@ -262,9 +292,9 @@ toggleCuestionario() {
 
   // Recomendar Post
   recomendar(id: string) {
-    this.service.recomendar(id).subscribe((post: VerPost) => {
+    this.service.recomendar(id,this.idPueblo).subscribe((post: VerPost) => {
       this.recomened = post;
-      this.verLosPost();
+      this.filtrarPost();
     });
   }
 

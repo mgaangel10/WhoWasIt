@@ -58,7 +58,7 @@ export class DetallesPostComponent implements OnInit{
     });
   }
   recomendar(id: string) {
-    this.service.recomendar(id).subscribe((post: VerPost) => {
+    this.service.recomendar(id,'').subscribe((post: VerPost) => {
       this.recomened = post;
       
     });

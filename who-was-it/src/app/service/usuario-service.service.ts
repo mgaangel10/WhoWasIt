@@ -134,9 +134,9 @@ export class UsuarioServiceService {
     })
   }
 
-  recomendar(id:string):Observable<VerPost>{
+  recomendar(id:string,idPueblo:string):Observable<VerPost>{
     let token = localStorage.getItem('TOKEN');
-    return this.http.post<VerPost>(`${this.url}/usuario/recomendar/${id}`,{}, {
+    return this.http.post<VerPost>(`${this.url}/usuario/recomendar/${id}/${idPueblo}`,{}, {
       headers: {
         accept: 'application/json',
         'Authorization': `Bearer ${token}`
