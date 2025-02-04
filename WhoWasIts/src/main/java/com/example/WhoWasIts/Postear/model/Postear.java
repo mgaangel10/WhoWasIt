@@ -4,6 +4,7 @@ import com.example.WhoWasIts.Comentarios.model.Comentario;
 import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.Favorito.model.Favorito;
 import com.example.WhoWasIts.FlashPost.model.Visualizacion;
+import com.example.WhoWasIts.Lugares.model.Lugares;
 import com.example.WhoWasIts.UsuarioAnonimo.model.UsuarioAnonimo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -73,6 +74,8 @@ public class Postear {
     private boolean palabrasDesordenadas;
 
     private String palabraDesordenada;
+    @ManyToOne
+    private Lugares lugares;
 
     @ManyToOne
     private Pueblos pueblos;

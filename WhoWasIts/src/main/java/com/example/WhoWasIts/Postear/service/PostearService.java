@@ -3,6 +3,9 @@ package com.example.WhoWasIts.Postear.service;
 import com.example.WhoWasIts.Cuestionario.Repositorio.CuestionarioRepo;
 import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
 import com.example.WhoWasIts.FlashPost.model.Visualizacion;
+import com.example.WhoWasIts.Lugares.model.Lugares;
+import com.example.WhoWasIts.Lugares.repositorio.LugaresRepo;
+import com.example.WhoWasIts.Lugares.service.LugaresService;
 import com.example.WhoWasIts.Postear.Dto.CrearPostDto;
 import com.example.WhoWasIts.Postear.Dto.EstadisticasPostDto;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
@@ -37,6 +40,8 @@ public class PostearService {
     private final CuestionarioRepo cuestionarioRepo;
     private final VisualizacionRepo visualizacionRepo;
     private final PueblosRepo pueblosRepo;
+    private final LugaresService lugaresService;
+    private final LugaresRepo lugaresRepo;
 
 
     public String obtenerMencionesComoString(String contenido) {
@@ -59,12 +64,27 @@ public class PostearService {
             if (usuarioOptional.isPresent()) {
                 Usuario usuario = usuarioOptional.get();
                 UsuarioAnonimo usuarioAnonimo = usuario.getUsuarioAnonimo();
-
+                System.out.println("que me llega "+crearPostDto.lugar());
+                String nombreLugar = lugaresService.buscarEnELBuscador(crearPostDto.lugar());
+                Optional<Pueblos> pueblos1 = pueblosRepo.findByPueblos(nombreLugar);
+                Optional<Lugares> lugares = lugaresRepo.findByNombreLugar(nombreLugar);
                 // Verifica si se trata de un post o un repost
                 Postear postear = new Postear();
                 postear.setContenido(crearPostDto.contenido());
                 postear.setUsuarioAnonimo(usuarioAnonimo);
-                postear.setPueblos(pueblos.get());
+                if (pueblos1.isPresent()){
+                    postear.setPueblos(pueblos1.get());
+                    postear.setLugares(null);
+                }else {
+                    postear.setPueblos(null);
+                }
+                if (lugares.isPresent()){
+                    postear.setLugares(lugares.get());
+                    postear.setPueblos(null);
+                }else {
+                    postear.setLugares(null);
+                }
+
                 postear.setFechaHora(LocalDateTime.now());
                 postear.setMenciones(obtenerMencionesComoString(crearPostDto.contenido()));
 
@@ -199,19 +219,19 @@ public class PostearService {
     }
 
 
-    public PostDto recomendar(UUID id,UUID idPubelo){
+    public PostDto recomendar(UUID id){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
             String nombre= ((UserDetails)principal).getUsername();
             Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
             Optional<Postear> postear1 = postearRepo.findById(id);
-            Optional<Pueblos> pueblos = pueblosRepo.findById(idPubelo);
+
             if (usuario.isPresent()){
                 Postear postear = new Postear();
                 postear.setRecomendar(true);
                 postear.setPostears(postear1.get());
-                postear.setPueblos(pueblos.get());
+                postear.setPueblos(postear1.get().getPueblos());
                 postear.setUsuarioAnonimo(usuario.get().getUsuarioAnonimo());
                 postear.setFechaHora(LocalDateTime.now());
                 postearRepo.save(postear);

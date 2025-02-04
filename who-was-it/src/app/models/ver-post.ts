@@ -17,6 +17,12 @@ export interface VerPost {
     desorden:         boolean;
     visualizacionDtos: VisualizacionDto[] | null;
     pueblos:            Pueblos;
+    lugaresDto:         LugaresDto;
+}
+
+export interface LugaresDto{
+    id:        string;
+    nombreLugar:  string;
 }
 
 export interface Pueblos {

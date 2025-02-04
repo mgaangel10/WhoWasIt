@@ -4,25 +4,26 @@
 
     </div>
 
-    <div class="w-75  " >
+    <div class="w-75  " style="background-color: black;" >
         <div class="d-flex w-100">
             
             <div class="container">
                 <div class="w-100 mx-auto" style="background-color: rgb(0, 0, 0); height: 100vh;">
                     <div class="d-flex " >
-                        <input class="form-control w-50 mx-auto mb-3 mt-2" type="text" placeholder="Buscar..." aria-label="default input example" style="border-radius: 15px;">
-                        <div *ngFor="let p of todasProvincias" class="mx-auto text-center mt-2">
-                          <button mat-button [matMenuTriggerFor]="menu" class="bg-success" >{{p.provincia}}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                          </svg></button>
-    <mat-menu #menu="matMenu" class="">
-      <button mat-menu-item *ngFor="let pueblo of p.puebloDtos" (click)="cogerIdPueblo(pueblo.idPueblo,pueblo.nombrePueblo)">{{pueblo.nombrePueblo}}</button>
-      
-    </mat-menu>
-    <div class=" text-center w-100">
-      
-    </div>
-                        </div>
+                      
+                      <input
+                      id="typeahead-focus"
+                      type="text"
+                      class="form-control w-50 mx-auto mb-3 mt-2" type="text" placeholder="Buscar..." aria-label="default input example" style="border-radius: 15px;"
+                      [(ngModel)]="model"
+                      [ngbTypeahead]="search"
+                      (selectItem)="onSelect($event)"
+                      (focus)="focus$.next($any($event).target.value)"
+                      (click)="click$.next($any($event).target.value)"
+                      #instance="ngbTypeahead"
+                    />
+                    
+                    
                         <button type="button" class="btn btn-outline-light w-25 mt-2" style="border-radius: 15px;height: 1%; " (click)="openModalComandas(modal)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope-plus-fill" viewBox="0 0 16 16">
                                 <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 4.697v4.974A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-1.965.45l-.338-.207z"/>
@@ -30,9 +31,7 @@
                               </svg> 
                         </button>
                     </div>
-                    <div class="text-center">
-                      <button type="button" class="btn btn-outline-light mb-3 mx-auto text-center w-25" style="border-radius: 15px;" >{{nombrePueblo}}</button>
-                    </div>
+                   
                     
                    
                     
@@ -200,8 +199,9 @@
                             </div>
                           
                             </div>
+                           
                             <div class="w-100 text-center mt-3" >
-                              <hr class="mx-auto w-75" style="background-color: white; height: 3px;">
+                              
                             
                               <button
                                 *ngIf="c.soloUnaVez && c.visualizacionDtos!.length! == 0"
@@ -219,6 +219,16 @@
                                 </svg>
                               </button>
                             </div>
+                            <div class="w-75 mx-auto d-flex text-light" style="justify-content: space-around;" >
+                              <button type="button" class="btn btn-outline-light" style="border-radius: 10px; "   (click)="cogerIdPueblo(c.lugaresDto.id)"    *ngIf="c.lugaresDto!=null"  >
+                               {{c.lugaresDto.nombreLugar}}
+                            </button>
+                            <button type="button" class="btn btn-outline-light" style="border-radius: 10px; "*ngIf="c.lugaresDto==null" (click)="cogerIdPueblo(c.pueblos.id)" >
+                              {{c.pueblos.pueblos}}
+                           </button>
+                            </div>
+                            
+                      
                             
                           
                             <div class="w-75 mx-auto d-flex text-light" style="justify-content: space-around;" *ngIf="!c.soloUnaVez">
@@ -254,6 +264,7 @@
                                     </button>{{c.numeroRecomendar}}
                                 </div>
                             </div>
+                            <hr class="mx-auto w-75" style="background-color: white; height: 3px;">
                         </div>
                     </div>
                 </div>
@@ -315,6 +326,21 @@
                   class="form-control"
                   placeholder="Escribe aquí..."
                 />
+                <label for="contenido" class="form-label">¿Donde?</label>
+                <input
+                id="lugar"
+                type="text"
+                class="form-control"
+                placeholder="Sevilla,   lugar en concreto..."
+                [(ngModel)]="model"
+                
+                formControlName="lugar"
+                [ngbTypeahead]="search"
+                (selectItem)="onSelect($event)"
+                (focus)="focus$.next($any($event).target.value)"
+                (click)="click$.next($any($event).target.value)"
+                #instance="ngbTypeahead"
+              />
               </div>
               <div class="mb-3 w-100 mx-auto text-center d-flex">
                 <button

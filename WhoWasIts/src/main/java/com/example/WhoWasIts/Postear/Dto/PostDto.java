@@ -3,6 +3,7 @@ package com.example.WhoWasIts.Postear.Dto;
 import com.example.WhoWasIts.Comentarios.Dto.ComentariosDto;
 import com.example.WhoWasIts.Cuestionario.Dto.CuestionarioDto;
 import com.example.WhoWasIts.FlashPost.Dto.VisualizacionDto;
+import com.example.WhoWasIts.Lugares.Dto.LugaresDto;
 import com.example.WhoWasIts.Postear.model.Postear;
 import com.example.WhoWasIts.Postear.model.Pueblos;
 
@@ -27,7 +28,8 @@ public record PostDto(UUID id,
                       boolean soloUnaVez,
                       boolean desorden,
                       List<VisualizacionDto> visualizacionDtos,
-                      Pueblos pueblos
+                      Pueblos pueblos,
+                      LugaresDto lugaresDto
 
 
                       ) {
@@ -52,7 +54,8 @@ public record PostDto(UUID id,
                 p.isPostUnaSolaVez(),
                 p.isPalabrasDesordenadas(),
                 p.getVisualizacions() == null ? null : p.getVisualizacions().stream().map(VisualizacionDto::of).collect(Collectors.toList()),
-                p.getPueblos()
+                p.getPueblos(),
+                p.getLugares() == null ? null : LugaresDto.of(p.getLugares())
                 // Verifica si el cuestionario es null
         );
     }

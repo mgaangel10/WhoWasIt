@@ -1,7 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { UsuarioServiceService } from '../../service/usuario-service.service';
 import { Opcione, VerPost } from '../../models/ver-post';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PostResponse } from '../../models/post-response';
 import { DarMegusta } from '../../models/dar-megusta';
@@ -15,6 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostUnaVezResponse } from '../../models/post-una-vez-reponse';
 import { ProvinciasResponse } from '../../models/provincias-response';
 import { EstadisticasDelPost } from '../../models/estadisticas-del-post';
+import { LugaresAll } from '../../models/todos-lugares';
+import { debounceTime, distinctUntilChanged, filter, map, merge, Observable, OperatorFunction, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -46,10 +48,18 @@ export class HomePageComponent implements OnInit {
   estdisticas!:EstadisticasDelPost;
   resultadoVotacion: ResultadoVotacion [] = [];
   cuestionarioCreado!: CuestionarioResponse | null;
+  model: any;
+  modelInput:any;
+
   opcionesList: string[] = [];
+  todosLugares: string[] = [];
   mostrarCuestionario: boolean = false;
 cuestionarioCreados: boolean = false;
-
+@ViewChild('instance', { static: true }) instance!: NgbTypeahead;
+@ViewChild('instance1', { static: true }) instance1!: NgbTypeahead;
+  
+focus$ = new Subject<string>();
+click$ = new Subject<string>();
 opciones: string[] = [];
 tituloCuestionarioControl = new FormControl('', { nonNullable: true });
 nuevaOpcionControl = new FormControl('', { nonNullable: true });
@@ -57,6 +67,61 @@ nuevaOpcionControl = new FormControl('', { nonNullable: true });
 toggleCuestionario() {
   this.mostrarCuestionario = !this.mostrarCuestionario;
 }
+
+//todos los lugares
+verTodosLugares() {
+  this.service.AllLugares().subscribe((r: LugaresAll) => {
+    this.todosLugares = [
+      ...r.lugares.map(lugar => lugar.nombreLugar),
+      ...r.pueblos.map(pueblo => pueblo.nombrePueblo)
+    ];
+  });
+}
+
+
+
+// Función de búsqueda para Typeahead
+search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
+  const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+  const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+  const inputFocus$ = this.focus$;
+
+  return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+    map(term => {
+      if (term === '') return this.todosLugares.slice(0, 5);
+      
+      const filtered = this.todosLugares
+        .filter(v => v.toLowerCase().includes(term.toLowerCase()))
+        .slice(0, 10);
+
+      // Si el término ingresado no está en la lista, lo agregamos como opción
+      if (!filtered.includes(term)) {
+        filtered.push(term);
+      }
+
+      return filtered;
+    })
+  );
+};
+@ViewChild('inputLugar', { static: false }) inputLugar!: ElementRef;
+
+
+onSelect(event: any) {
+  if (event && event.item) {
+    // Si selecciona un elemento de la lista
+    this.nombrePueblo = event.item;
+  } else {
+    // Si escribe un nuevo lugar que no está en la lista
+    this.nombrePueblo = this.inputLugar.nativeElement.value; 
+  }
+
+  console.log('Lugar seleccionado o nuevo:', this.nombrePueblo);
+  this.crerPost.patchValue({ lugar: this.nombrePueblo });
+
+  console.log('Formulario actualizado:', this.crerPost.value);
+}
+
+
 
   // Formularios
   crearCuestionarioForm = new FormGroup({
@@ -69,6 +134,7 @@ toggleCuestionario() {
 
   crerPost = new FormGroup({
     contenido: new FormControl(''),
+    lugar: new FormControl(),
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
     postUnaVez : new FormControl(),
@@ -91,6 +157,7 @@ toggleCuestionario() {
     this.verPerfil();
     this.filtrarPost();
     this.ObtenerEstadisticas();
+    this.verTodosLugares();
     this.provincias();
     this.usuarioActualId = localStorage.getItem('User_ID');
     this.verLasOpcionesDelCUestionario();
@@ -111,9 +178,9 @@ toggleCuestionario() {
     })
   }
 
-  cogerIdPueblo(id:string,nombre:string){
+  cogerIdPueblo(id:string){
     this.idPueblo = id;
-    this.nombrePueblo = nombre;
+    
     console.log('id del pueblo: '+this.idPueblo)
     this.filtrarPost();
 
@@ -234,19 +301,20 @@ toggleCuestionario() {
     }
     if(this.idPueblo!=null){
       this.service
-      .crearPost(this.idPueblo,this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .crearPost(this.idPueblo,this.crerPost.value.contenido!,this.crerPost.value.lugar!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
-        console.log('hola'+post);
-        this.filtrarPost();
+        
+        this.verLosPost();
+        this.crerPost.reset();
         modal.close();
         this.resetCuestionario();
       });
     }else{
       this.service
-      .crearPost('141f26c9-640b-4e4e-aeb5-bcce5a88d79a',this.crerPost.value.contenido!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .crearPost('141f26c9-640b-4e4e-aeb5-bcce5a88d79a',this.crerPost.value.contenido!,this.crerPost.value.lugar!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
-        console.log('hola'+post);
-        this.filtrarPost();
+        
+        this.verLosPost();
         modal.close();
         this.resetCuestionario();
       });
@@ -262,7 +330,7 @@ toggleCuestionario() {
     }
 
     this.service
-      .crearPost(this.idPueblo,this.crerRepost.value.contenido!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .crearPost(this.idPueblo,this.crerRepost.value.contenido!,this.crerPost.value.lugar!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!)
       .subscribe((post: PostResponse) => {
         
         this.verLosPost();
@@ -280,21 +348,21 @@ toggleCuestionario() {
 
   // Obtener Posts
   verLosPost() {
-   // this.service.verPost().subscribe((posts: VerPost[]) => {
-     // this.verPosts = posts;
-     this.filtrarPost();
+    this.service.verPost().subscribe((posts: VerPost[]) => {
+      this.verPosts = posts;
+     
       let nombre = localStorage.getItem('USERNAME');
       this.usuerName = nombre!;
       console.log('nombre de uuario: '+this.usuerName)
       console.log('Posts:', this.verPosts);
-    //});
+    });
   }
 
   // Recomendar Post
   recomendar(id: string) {
-    this.service.recomendar(id,this.idPueblo).subscribe((post: VerPost) => {
+    this.service.recomendar(id).subscribe((post: VerPost) => {
       this.recomened = post;
-      this.filtrarPost();
+      this.verLosPost();
     });
   }
 

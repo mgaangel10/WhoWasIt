@@ -1,5 +1,7 @@
 package com.example.WhoWasIts.Postear.service;
 
+import com.example.WhoWasIts.Lugares.model.Lugares;
+import com.example.WhoWasIts.Lugares.repositorio.LugaresRepo;
 import com.example.WhoWasIts.Postear.Dto.EstadisticasPostDto;
 import com.example.WhoWasIts.Postear.Dto.PostDto;
 import com.example.WhoWasIts.Postear.Dto.ProvinciasDto;
@@ -30,6 +32,7 @@ public class ProvinciasService {
     private final PueblosRepo pueblosRepo;
     private final PostearRepo postearRepo;
     private final ProvinciasRepo provinciasRepo;
+    private final LugaresRepo lugaresRepo;
 
     public String calcularTiempoPublicado(LocalDateTime fechaHora) {
         LocalDateTime ahora = LocalDateTime.now();
@@ -57,8 +60,9 @@ public class ProvinciasService {
         if (principal instanceof UserDetails) {
             String nombre= ((UserDetails)principal).getUsername();
             Optional<Usuario> usuario = usuarioRepo.findByEmailIgnoreCase(nombre);
+            Optional<Lugares> lugares = lugaresRepo.findById(id);
             Optional<Pueblos> pueblos = pueblosRepo.findById(id);
-            if (usuario.isPresent()){
+            if (usuario.isPresent()&&pueblos.isPresent()&&lugares.isEmpty()){
                 List<Postear> postears = postearRepo.findAll();
                 List<Postear> postears1 = postears.stream().filter(postear -> postear.getPueblos().getId().equals(id)).collect(Collectors.toList());
                 List<Postear> postears2 = postears1.stream().map(postear -> {
@@ -69,6 +73,16 @@ public class ProvinciasService {
                 List<PostDto> postDtos = postears2.stream().map(PostDto::of).collect(Collectors.toList());
                 return postDtos;
 
+            }else {
+                List<Postear> postears = postearRepo.findAll();
+                List<Postear> postears1 = postears.stream().filter(postear -> postear.getLugares().getId().equals(id)).collect(Collectors.toList());
+                List<Postear> postears2 = postears1.stream().map(postear -> {
+                    String tiempo = calcularTiempoPublicado(postear.getFechaHora());
+                    postear.setTiempoPublicado(tiempo);
+                    return postearRepo.save(postear);
+                }).collect(Collectors.toList());
+                List<PostDto> postDtos = postears2.stream().map(PostDto::of).collect(Collectors.toList());
+                return postDtos;
             }
         }
         return null;
