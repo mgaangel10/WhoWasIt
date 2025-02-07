@@ -68,6 +68,9 @@
                                 </div>
                                 <div class="card-body w-100 text-center" *ngIf="!c.soloUnaVez" (click)="detallesPost(c.id)">
                                     {{c.contenido}}
+                                    <div *ngIf="c.imagen!=null">
+                                      <img [src]="c.imagen" alt="" style="width: 50%;">
+                                    </div>
                                     <div class="card w-75 mx-auto mb-3 card shadow bg-white rounded" *ngIf="c.cuestionarioDto != null">
                                       <div class="card-header d-flex w-100 mx-auto" style="justify-content: space-around; background-color: rgb(247, 221, 108);">
                                           {{c.cuestionarioDto.titulo}}
@@ -276,24 +279,24 @@
                 <div class="d-flex justify-content-center">
                     <img [src]="perfil.foto" alt="" class="w-50" style="border-radius: 50%;">
                   </div>
-                <h5 class="text-center">{{perfil.nombreUsuario}}</h5>
+                <h5 class="text-center" >{{perfil.nombreUsuario}}</h5>
                 <hr>
                 <h6 class="text-center"><u>Informacion Real</u></h6>
                 <div class="d-flex" style="justify-content: space-around;">
-                    <h5>Nombre:</h5>
-                    <h5>{{perfil.usuario.name}}</h5>
+                    <h5 style="font-size: small;">Nombre:</h5>
+                    <h5 style="font-size: small;">{{perfil.usuario.name}}</h5>
+                </div>
+                <div class="d-flex" style="justify-content: space-around; " >
+                    <h5 style="font-size: small;">Apellido:</h5>
+                    <h5 style="font-size: small;">{{perfil.usuario.lastName}}</h5>
                 </div>
                 <div class="d-flex" style="justify-content: space-around;">
-                    <h5>Apellido:</h5>
-                    <h5>{{perfil.usuario.lastName}}</h5>
+                    <h5 style="font-size: small;">Email:</h5>
+                    <h5 style="font-size: small;">{{perfil.usuario.username}}</h5>
                 </div>
                 <div class="d-flex" style="justify-content: space-around;">
-                    <h5>Email:</h5>
-                    <h5>{{perfil.usuario.username}}</h5>
-                </div>
-                <div class="d-flex" style="justify-content: space-around;">
-                    <h5>Numero Telefono:</h5>
-                    <h5>{{perfil.usuario.phoneNumber}}</h5>
+                    <h5 style="font-size: small;">Numero Telefono:</h5>
+                    <h5 style="font-size: small;">{{perfil.usuario.phoneNumber}}</h5>
                 </div>
                 <div class=" text-center w-100">
                     <button type="button" class="btn btn-outline-light mt-5 text-center w-50" style="border-radius: 15px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -328,7 +331,7 @@
                 />
                 <label for="contenido" class="form-label">¿Donde?</label>
                 <input
-                id="lugar"
+                id="typeahead-focus"
                 type="text"
                 class="form-control"
                 placeholder="Sevilla,   lugar en concreto..."
@@ -341,6 +344,15 @@
                 (click)="click$.next($any($event).target.value)"
                 #instance="ngbTypeahead"
               />
+              <div class="mb-3">
+                <label for="files" class="form-label">Sube una imagen</label>
+                <input
+                  type="file"
+                  id="files"
+                  (change)="onFileChange($event)"
+                  class="form-control"
+                />
+              </div>
               </div>
               <div class="mb-3 w-100 mx-auto text-center d-flex">
                 <button

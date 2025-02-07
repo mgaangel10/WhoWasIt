@@ -1,13 +1,16 @@
 package com.example.WhoWasIts.Postear.Dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.UUID;
 
 public record CrearPostDto(String contenido,
                            String lugar,
+
                            UUID id,
                            UUID idCuestionario,
-                           boolean postUnaVez,
-                           boolean desorden
+                           Boolean postUnaVez,
+                           Boolean desorden
 
 
                            ) {

@@ -2,6 +2,8 @@ package com.example.WhoWasIts.Postear.service;
 
 import com.example.WhoWasIts.Cuestionario.Repositorio.CuestionarioRepo;
 import com.example.WhoWasIts.Cuestionario.model.Cuestionario;
+import com.example.WhoWasIts.File.Controller.FileController;
+import com.example.WhoWasIts.File.service.FileStorageService;
 import com.example.WhoWasIts.FlashPost.model.Visualizacion;
 import com.example.WhoWasIts.Lugares.model.Lugares;
 import com.example.WhoWasIts.Lugares.repositorio.LugaresRepo;
@@ -19,10 +21,14 @@ import com.example.WhoWasIts.UsuarioAnonimo.repositorio.UsuarioAnonimoRepo;
 import com.example.WhoWasIts.users.model.Usuario;
 import com.example.WhoWasIts.users.repositorio.UsuarioRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -42,6 +48,8 @@ public class PostearService {
     private final PueblosRepo pueblosRepo;
     private final LugaresService lugaresService;
     private final LugaresRepo lugaresRepo;
+    private final FileStorageService fileStorageService;
+    private final FileController fileController;
 
 
     public String obtenerMencionesComoString(String contenido) {
@@ -53,7 +61,7 @@ public class PostearService {
         }
         return menciones.toString().trim();
     }
-    public PostDto crearPost(CrearPostDto crearPostDto,UUID idPueblo) {
+    public PostDto crearPost(CrearPostDto crearPostDto, MultipartFile file, UUID idPueblo) {
         // Obtiene el usuario autenticado
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -85,8 +93,22 @@ public class PostearService {
                     postear.setLugares(null);
                 }
 
+
+                if (file != null && !file.isEmpty()) {
+                    fileController.uploadFiles(file);
+                    String fileName = file.getOriginalFilename();
+
+
+                    postear.setImagen(fileName);
+                } else {
+                    postear.setImagen(null); // O asigna un valor por defecto si lo necesitas
+                }
+
+
                 postear.setFechaHora(LocalDateTime.now());
+
                 postear.setMenciones(obtenerMencionesComoString(crearPostDto.contenido()));
+
 
                 if (crearPostDto.id() != null) {
                     // Caso repost: busca el post original
@@ -131,6 +153,7 @@ public class PostearService {
                 String tiempoPublicado = calcularTiempoPublicado(postear.getFechaHora());
                 postear.setTiempoPublicado(tiempoPublicado);
                 postearRepo.save(postear);
+
                 return PostDto.of(postear);
             } else {
                 throw new IllegalStateException("Usuario no encontrado en el contexto de autenticación.");
@@ -208,6 +231,8 @@ public class PostearService {
                 List<Postear> postearsActualizados = postears.stream().map(postear -> {
                     String tiempo = calcularTiempoPublicado(postear.getFechaHora());
                     postear.setTiempoPublicado(tiempo);
+
+
                     return postearRepo.save(postear);
                 }).collect(Collectors.toList());
 

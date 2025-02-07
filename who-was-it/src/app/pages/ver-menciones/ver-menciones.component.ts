@@ -28,7 +28,7 @@ export class VerMencionesComponent implements OnInit{
   repost(modal: any) {
     console.log('Datos enviados al servidor:', this.crerRepost.value);
                           //esto esta mal hay que poner el id del pueblo en el primer atributo
-    this.service.crearPost(this.crerRepost.value.id!,this.crerRepost.value.contenido!,this.crerRepost.value.lugar!, this.crerRepost.value.id!,this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerRepost.value.desorden!)
+    this.service.crearPost(this.crerRepost.value.id!,this.crerRepost.value.contenido!,this.crerRepost.value.lugar!, this.crerRepost.value.id!,this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerRepost.value.desorden!,this.crerRepost.value.desorden!)
       .subscribe((l: PostResponse) => {
         
         modal.close(); // Cierra el modal después de la respuesta exitosa

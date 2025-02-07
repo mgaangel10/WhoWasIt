@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public record PostDto(UUID id,
                       String contenido,
+                      String imagen,
+                      String url,
                       String palabraDesordenada,
                       String nombreUsuario,
                       String foto,
@@ -39,6 +41,8 @@ public record PostDto(UUID id,
         return new PostDto(
                 p.getId(),
                 p.getContenido(),
+                p.getImagen(),
+                p.getUrl(),
                 p.getPalabraDesordenada(),
                 p.getUsuarioAnonimo().getNombreDelUsuario(),
                 p.getUsuarioAnonimo().getAvatar().getImagen(),

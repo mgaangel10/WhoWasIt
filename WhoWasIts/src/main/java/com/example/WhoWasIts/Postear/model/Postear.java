@@ -33,6 +33,11 @@ public class Postear {
 
     private String contenido;
 
+    @Lob
+    private String imagen;
+    private String url;
+
+
     @ManyToOne(fetch = FetchType.LAZY) // Evita cargar la información del usuario hasta que se necesite
     @JoinColumn(name = "usuario_anonimo_id", nullable = false)
     @JsonBackReference // Evita referencias circulares en la serialización

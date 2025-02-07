@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginResponse } from '../models/login';
 import { Observable } from 'rxjs';
@@ -76,20 +76,25 @@ export class UsuarioServiceService {
       });
   }
 
-  crearPost(idPueblo:string,contenido:string,lugar:string,id:string,idCuestionario:string,postUnaVez:boolean,desorden:boolean):Observable<PostResponse>{
+  crearPost(idPueblo:string,contenido:string,lugar:string,id:string,idCuestionario:string,postUnaVez:boolean,desorden:boolean,files:File):Observable<PostResponse>{
     let token = localStorage.getItem('TOKEN');
+    const formData = new FormData();
+    formData.append('contenido', contenido);
+    formData.append('lugar', lugar);
+    formData.append('id', id);
+    formData.append('idCuestionario', idCuestionario);
+    formData.append('postUnaVez', String(postUnaVez ?? false)); 
+    formData.append('desorden', String(desorden ?? false));
+    
+  
+    if (files) {
+      formData.append('files', files); // Aquí se adjunta el archivo correctamente
+    }
 
     return this.http.post<PostResponse>(`${this.url}/usuario/nuevo/post/${idPueblo}`,
-      {
-        "contenido": `${contenido}`,
-        "lugar": `${lugar}`,
-        "id": `${id}`,
-        "idCuestionario":`${idCuestionario}`,
-        "postUnaVez":`${postUnaVez}`,
-        "desorden":`${desorden}`
-      },{
+      formData,{
         headers: {
-          accept: 'application/json',
+          
           'Authorization': `Bearer ${token}`
         }
       });
@@ -388,5 +393,17 @@ export class UsuarioServiceService {
        });
   }
 
+  getFile(filename: string): Observable<Blob> {
+    let token = localStorage.getItem('TOKEN');
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.url}/usuario/file/${filename}`, { 
+      headers: headers,
+      responseType: 'blob' 
+    });
+  }
 
 }

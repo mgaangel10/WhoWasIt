@@ -1,6 +1,8 @@
 export interface VerPost {
     id:               string;
     contenido:        string;
+    imagen:            string;
+    url:                string;
     palabraDesordenada: string;
     nombreUsuario:    string;
     foto:             string;

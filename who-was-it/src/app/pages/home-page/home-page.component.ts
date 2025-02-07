@@ -32,6 +32,7 @@ export class HomePageComponent implements OnInit {
   idPost!: string;
   obtenerIdPost!:string;
   idPueblo!:string;
+  imagen!:string;
   unaVez!:PostUnaVezResponse;
   darMegusta!: DarMegusta;
   perfil!: VerPerfil;
@@ -137,17 +138,19 @@ onSelect(event: any) {
     lugar: new FormControl(),
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
-    postUnaVez : new FormControl(),
-    desorden: new FormControl()
+    postUnaVez: new FormControl(),
+    desorden: new FormControl(),
     
   });
+  
 
   crerRepost = new FormGroup({
     contenido: new FormControl(''),
     id: new FormControl(''),
     idCuestionario: new FormControl(''),
     postUnaVez : new FormControl(),
-    desorden: new FormControl()
+    desorden: new FormControl(),
+    files : new FormControl()
   });
 
   constructor(private service: UsuarioServiceService, private modalService: NgbModal,private router: Router) {}
@@ -155,6 +158,7 @@ onSelect(event: any) {
   ngOnInit(): void {
     this.verLosPost();
     this.verPerfil();
+    
     this.filtrarPost();
     this.ObtenerEstadisticas();
     this.verTodosLugares();
@@ -292,36 +296,55 @@ onSelect(event: any) {
    
   }
   
+  selectedFile: File | null = null; // Variable para almacenar el archivo
+
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0]; // Guardamos el archivo seleccionado
+    }
+  }
+ // Variable para almacenar el archivo
+fileToUpload: File | null = null;
+
+// Método para manejar la carga de archivo
+onFileChange(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    this.fileToUpload = file; 
+    console.log("se sube la imagen" + this.fileToUpload)
+  }
+}
 
   
-  // Publicar Post
+  
   login(modal: any) {
     if (this.cuestionarioCreado) {
       this.crerPost.patchValue({ idCuestionario: this.cuestionarioCreado.id });
     }
-    if(this.idPueblo!=null){
-      this.service
-      .crearPost(this.idPueblo,this.crerPost.value.contenido!,this.crerPost.value.lugar!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
+  
+    const idPueblo = this.idPueblo ?? '141f26c9-640b-4e4e-aeb5-bcce5a88d79a';
+  
+    this.service
+      .crearPost(
+        idPueblo,
+        this.crerPost.value.contenido!,
+        this.crerPost.value.lugar!,
+        this.crerPost.value.id!,
+        this.crerPost.value.idCuestionario!,
+        this.crerPost.value.postUnaVez!,
+        this.crerPost.value.desorden!,
+        this.fileToUpload!
+      )
       .subscribe((post: PostResponse) => {
-        
         this.verLosPost();
         this.crerPost.reset();
         modal.close();
         this.resetCuestionario();
       });
-    }else{
-      this.service
-      .crearPost('141f26c9-640b-4e4e-aeb5-bcce5a88d79a',this.crerPost.value.contenido!,this.crerPost.value.lugar!, this.crerPost.value.id!, this.crerPost.value.idCuestionario!,this.crerPost.value.postUnaVez!,this.crerPost.value.desorden!)
-      .subscribe((post: PostResponse) => {
-        
-        this.verLosPost();
-        modal.close();
-        this.resetCuestionario();
-      });
-    }
-
-    
   }
+  
+ 
+  
 
   // Publicar Repost
   repost(modal: any) {
@@ -330,7 +353,7 @@ onSelect(event: any) {
     }
 
     this.service
-      .crearPost(this.idPueblo,this.crerRepost.value.contenido!,this.crerPost.value.lugar!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!)
+      .crearPost(this.idPueblo,this.crerRepost.value.contenido!,this.crerPost.value.lugar!, this.crerRepost.value.id!, this.crerRepost.value.idCuestionario!,this.crerRepost.value.postUnaVez!,this.crerPost.value.desorden!,this.crerPost.value.postUnaVez!)
       .subscribe((post: PostResponse) => {
         
         this.verLosPost();
@@ -350,13 +373,39 @@ onSelect(event: any) {
   verLosPost() {
     this.service.verPost().subscribe((posts: VerPost[]) => {
       this.verPosts = posts;
-     
-      let nombre = localStorage.getItem('USERNAME');
-      this.usuerName = nombre!;
-      console.log('nombre de uuario: '+this.usuerName)
+      
+      // Obtener el nombre de usuario desde localStorage de manera segura
+      this.usuerName = localStorage.getItem('USERNAME') || 'Usuario desconocido';
+      
+      console.log('Nombre de usuario:', this.usuerName);
       console.log('Posts:', this.verPosts);
+  
+      // Recorremos los posts y asignamos la URL correcta para la imagen
+      this.verPosts.forEach(post => {
+        if (post?.imagen) { // Verifica si existe la propiedad imagen
+          // Limpia la ruta en caso de que contenga subcarpetas innecesarias
+          if (post.imagen != null) {
+            this.imagen = post.imagen;
+            this.verImagenes(post);
+          }
+        }
+      });
+    }, error => {
+      console.error('Error al obtener los posts:', error);
     });
   }
+  
+  verImagenes(post: VerPost) {
+    this.service.getFile(post.imagen).subscribe(r => {
+      // Asignar la URL de la imagen directamente al post
+      post.imagen = URL.createObjectURL(r);
+      console.log('Imagen URL para el post:', post.imagen);
+    });
+  }
+  
+
+  
+  
 
   // Recomendar Post
   recomendar(id: string) {
